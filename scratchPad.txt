@@ -1,0 +1,12 @@
+ const char *chipname = "gpiochip0";
+    struct gpiod_chip *chip;
+    struct gpiod_line *Xout;    // Red LED
+    struct gpiod_line *Yout;  // Green LED
+    // Open GPIO chip
+    chip = gpiod_chip_open_by_name(chipname);
+    // Open GPIO lines
+  linesXout = gpiod_chip_get_line(chip, 24);
+  linesYout = gpiod_chip_get_line(chip, 25);
+  // Open LED lines for output
+  gpiod_line_request_output(linesXout, "example1", 0);
+  gpiod_line_request_output(linesYout, "example1", 0);
