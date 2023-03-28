@@ -20,11 +20,17 @@
 #define asdbSweeper_H
 
 #define sweepTime 2
+#define zoomFactorX 5
+#define zoomFactorY 2.5
+#define MaxRangeX 10
+#define MaxRangeY 6
 
 #define NotFound 0
 #define Found 1
 
-#define SleepTimer 3
+#define interpFactor 1000
+#define SleepTimer 100
+#define MaxAircraft 26
 #define Sleeping 0
 #define Awake 1
 
@@ -32,22 +38,38 @@
 #define homeLat 32.831865
 
 /** Strings of text to look for from dump1090 **/
+char DSP_ID[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 char ICAO_ADR[] = {"Address:  "};
 char ICAO_LAT[] = {"latitude:  "};
-char ICAO_LON[] = {"longitude: "};
+char ICAO_LON[] = {"longitude:  "};
+char ICAO_SQK[] = ("Squawk:  ");
+char ICAO_HDG[] = ("Heading:  ");
+char ICAO_SPD[] = ("Speed:  ");
 int  sweeptimer = 0;
 
 bool addressFound = NotFound;
 bool ADSBgRun = 1;
+bool ADSBpRun = 1;
 bool latFound = NotFound;
 bool lonFound = NotFound;
+float ABSfloat(float);
 void *F_ADSBgetter(void *arg);
+void *F_ADSBpred(void *arg);
 
 class C_ADSB_Database{
 public:
     char * ADSB_Address;
-    float ADSB_Ydistance = 0;
+    int  ADSB_Squawk = 0;
+    float  ADSB_HDG = 0;
+    float  ADSB_SPD = 0;
     float ADSB_Xdistance = 0;
+    float ADSB_Ydistance = 0;
+    int CALC_timer = interpFactor;
+    float  CALC_HDG = 0;
+    float  CALC_SPD = 0;
+    double CALC_Xdistance = 0;
+    double CALC_Ydistance = 0;
+    bool ADSB_preXY=0;
     int AircraftAsleepTimer = 0;
     /** Memory constructor **/
     C_ADSB_Database(void){
