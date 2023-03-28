@@ -27,8 +27,11 @@
 
 #define NotFound 0
 #define Found 1
+#define PI 3.14159265
 
-#define interpFactor 1000
+#define interpFactor 28800
+#define interpCycles 1000
+#define interpTime 125
 #define SleepTimer 100
 #define MaxAircraft 26
 #define Sleeping 0
@@ -53,6 +56,7 @@ bool ADSBpRun = 1;
 bool latFound = NotFound;
 bool lonFound = NotFound;
 float ABSfloat(float);
+float DegToRad(int);
 void *F_ADSBgetter(void *arg);
 void *F_ADSBpred(void *arg);
 

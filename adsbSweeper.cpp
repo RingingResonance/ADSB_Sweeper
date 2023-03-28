@@ -230,7 +230,7 @@ void *F_ADSBgetter(void *arg){
                             float ABShomeLat = homeLat; if(ABShomeLat<0)ABShomeLat*=-1;  //get absolute value of homeLat
                             O_ADSB_Database[i].CALC_Xdistance=O_ADSB_Database[i].ADSB_Xdistance=(cos(ABShomeLat)*60.09719)*(ICAOlon-homeLon);
                             O_ADSB_Database[i].ADSB_preXY=1;
-                            O_ADSB_Database[i].CALC_timer = interpFactor;
+                            O_ADSB_Database[i].CALC_timer = interpCycles;
                             O_ADSB_Database[i].AircraftAsleepTimer = SleepTimer; //Reset it's sleep timer.
                         }
                         //Update Squawk
@@ -263,7 +263,7 @@ void *F_ADSBgetter(void *arg){
                                 O_ADSB_Database[i].CALC_Xdistance=O_ADSB_Database[i].ADSB_Xdistance = (cos(ABShomeLat)*60.09719)*(ICAOlon-homeLon);
                                 if(ABSfloat(O_ADSB_Database[i].ADSB_Xdistance) > MaxRangeX)break;
                                 O_ADSB_Database[i].ADSB_preXY=1;
-                                O_ADSB_Database[i].CALC_timer = interpFactor;
+                                O_ADSB_Database[i].CALC_timer = interpCycles;
                                 O_ADSB_Database[i].AircraftAsleepTimer = SleepTimer; //Reset it's sleep timer.
                             }
                             /** If it's a new aircraft and we aren't getting geo-data then Reset Previous XY get. **/
@@ -296,14 +296,17 @@ void *F_ADSBpred(void *arg){
                 &&O_ADSB_Database[i].ADSB_SPD>-1
                 &&O_ADSB_Database[i].ADSB_HDG>-1){
                     if(O_ADSB_Database[i].CALC_timer<=0){
-                        O_ADSB_Database[i].CALC_timer=interpFactor;
-                        O_ADSB_Database[i].CALC_Xdistance = O_ADSB_Database[i].CALC_Xdistance+((std::sin(O_ADSB_Database[i].ADSB_HDG)*(O_ADSB_Database[i].ADSB_SPD/-3600)));
-                        O_ADSB_Database[i].CALC_Ydistance = O_ADSB_Database[i].CALC_Ydistance+((std::cos(O_ADSB_Database[i].ADSB_HDG)*(O_ADSB_Database[i].ADSB_SPD/3600)));
+                        O_ADSB_Database[i].CALC_timer=interpCycles;
+                        O_ADSB_Database[i].CALC_Xdistance = O_ADSB_Database[i].CALC_Xdistance+((std::sin(DegToRad(O_ADSB_Database[i].ADSB_HDG))*(O_ADSB_Database[i].ADSB_SPD/interpFactor)));
+                        O_ADSB_Database[i].CALC_Ydistance = O_ADSB_Database[i].CALC_Ydistance+((std::cos(DegToRad(O_ADSB_Database[i].ADSB_HDG))*(O_ADSB_Database[i].ADSB_SPD/interpFactor)));
+                        //If out of range then remove from list via setting SleepTimer to Asleep;
+                        if(ABSfloat(O_ADSB_Database[i].CALC_Ydistance)>MaxRangeY
+                           || ABSfloat(O_ADSB_Database[i].CALC_Xdistance)>MaxRangeX)O_ADSB_Database[i].AircraftAsleepTimer = Sleeping;
                     }
                     else O_ADSB_Database[i].CALC_timer--;
                 }
         }
-        usleep(1000);
+        usleep(interpTime);
     }
     std::cout << "ADS-B_Predictor thread terminated. \n";
     return 0;
@@ -314,5 +317,9 @@ float ABSfloat(float in){
     if(in<0)i=in*-1;
     else i=in;
     return i;
+}
+
+float DegToRad(int in){
+    return (in*PI/180);
 }
 
