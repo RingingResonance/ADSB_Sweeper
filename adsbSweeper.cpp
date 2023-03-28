@@ -297,7 +297,7 @@ void *F_ADSBpred(void *arg){
                 &&O_ADSB_Database[i].ADSB_HDG>-1){
                     if(O_ADSB_Database[i].CALC_timer<=0){
                         O_ADSB_Database[i].CALC_timer=interpFactor;
-                        O_ADSB_Database[i].CALC_Xdistance = O_ADSB_Database[i].CALC_Xdistance+((std::sin(O_ADSB_Database[i].ADSB_HDG)*(O_ADSB_Database[i].ADSB_SPD/3600)));
+                        O_ADSB_Database[i].CALC_Xdistance = O_ADSB_Database[i].CALC_Xdistance+((std::sin(O_ADSB_Database[i].ADSB_HDG)*(O_ADSB_Database[i].ADSB_SPD/-3600)));
                         O_ADSB_Database[i].CALC_Ydistance = O_ADSB_Database[i].CALC_Ydistance+((std::cos(O_ADSB_Database[i].ADSB_HDG)*(O_ADSB_Database[i].ADSB_SPD/3600)));
                     }
                     else O_ADSB_Database[i].CALC_timer--;
