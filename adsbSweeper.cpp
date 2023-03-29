@@ -24,6 +24,7 @@
 #include <cmath>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <thread>
 #include <pthread.h>
 #include <limits.h>
 #include <unistd.h>
@@ -50,19 +51,27 @@ int main(int argc, char *argv[]) {
 
     /** Create ADS-B database **/
     O_ADSB_Database = new C_ADSB_Database [MaxAircraft]; //Max aircraft.
+    /** Create loop for display. **/
+    std::thread DisplayThread( F_Display );
     /** Create loop for information predictor. **/
-    pthread_t O_ADSBpred;
-    pthread_create(&O_ADSBpred, NULL, F_ADSBpred, NULL);
+    std::thread ADSBpredThread( F_ADSBpred );
     /** Create loop for ADS-B information getter. **/
-    pthread_t O_ADSBgetter;
-    pthread_create(&O_ADSBgetter, NULL, F_ADSBgetter, NULL);
+    std::thread ADSBgetterThread( F_ADSBgetter );
     /***********************************************/
     /** Calculate delay used for the sweep timer **/
     slptm.tv_sec = 0;
     float sweepTemp = 100000000*(1/(373760/sweepTime));
     sweeptimer = sweepTemp;
     slptm.tv_nsec = 1;
-    for(;;){
+    ADSBgetterThread.join();
+    ADSBpredThread.join();
+    DisplayThread.join();
+    //pthread_join(O_Display, NULL);
+    return 0;
+}
+/** Display Loop **/
+void F_Display(){
+    while(displayRun){
         for(int radarSweep=0;radarSweep<365;radarSweep++){
             for(int radarTrace=-512;radarTrace<512;radarTrace++){
                 int Xout = 512+(std::cos(radarSweep)*radarTrace);
@@ -112,19 +121,16 @@ int main(int argc, char *argv[]) {
                 << "  X:" << O_ADSB_Database[i].CALC_Xdistance << "  Y:" << O_ADSB_Database[i].CALC_Ydistance << "\n";
                 O_ADSB_Database[i].AircraftAsleepTimer--;
             }
-            usleep(20);  //Print slower.
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
-        usleep(250);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
-    ADSBgRun = 0;
-    ADSBpRun = 0;
-    pthread_join(O_ADSBgetter, NULL);
-    pthread_join(O_ADSBpred, NULL);
-    return 0;
+    std::cout << "Display thread terminated. \n";
 }
 
+
 /** ADS-B loop **/
-void *F_ADSBgetter(void *arg){
+void F_ADSBgetter(){
     char ADSB_MESSAGE[1000];
     char ICAOadr[20];
     int  ICAOsquak;
@@ -285,10 +291,9 @@ void *F_ADSBgetter(void *arg){
            }
     }
     std::cout << "ADS-B_Getter thread terminated. \n";
-    return 0;
 }
 
-void *F_ADSBpred(void *arg){
+void F_ADSBpred(){
     while(ADSBpRun){
         for(int i=0;i<MaxAircraft;i++){
             if(O_ADSB_Database[i].AircraftAsleepTimer!=Sleeping
@@ -302,14 +307,17 @@ void *F_ADSBpred(void *arg){
                         //If out of range then remove from list via setting SleepTimer to Asleep;
                         if(ABSfloat(O_ADSB_Database[i].CALC_Ydistance)>MaxRangeY
                            || ABSfloat(O_ADSB_Database[i].CALC_Xdistance)>MaxRangeX)O_ADSB_Database[i].AircraftAsleepTimer = Sleeping;
+
+                        //O_ADSB_Database[i].timeEnd = std::chrono::high_resolution_clock::now();
+                        //double timeFactor = std::chrono::duration_cast<std::chrono::nanoseconds>(O_ADSB_Database[i].timeEnd-O_ADSB_Database[i].timeBegin).count()
+                        //O_ADSB_Database[i].timeBegin = std::chrono::high_resolution_clock::now();
                     }
                     else O_ADSB_Database[i].CALC_timer--;
                 }
         }
-        usleep(interpTime);
+        std::this_thread::sleep_for(std::chrono::microseconds(interpTime));
     }
     std::cout << "ADS-B_Predictor thread terminated. \n";
-    return 0;
 }
 
 float ABSfloat(float in){

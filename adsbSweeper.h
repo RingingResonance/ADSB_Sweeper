@@ -20,10 +20,10 @@
 #define asdbSweeper_H
 
 #define sweepTime 2
-#define zoomFactorX 5
-#define zoomFactorY 2.5
-#define MaxRangeX 10
-#define MaxRangeY 6
+#define zoomFactorX 10
+#define zoomFactorY 5
+#define MaxRangeX 5
+#define MaxRangeY 3
 
 #define NotFound 0
 #define Found 1
@@ -53,15 +53,19 @@ int  sweeptimer = 0;
 bool addressFound = NotFound;
 bool ADSBgRun = 1;
 bool ADSBpRun = 1;
+bool displayRun = 1;
 bool latFound = NotFound;
 bool lonFound = NotFound;
 float ABSfloat(float);
 float DegToRad(int);
-void *F_ADSBgetter(void *arg);
-void *F_ADSBpred(void *arg);
+void F_Display(void);
+void F_ADSBgetter(void);
+void F_ADSBpred(void);
 
 class C_ADSB_Database{
 public:
+    int timeBegin;
+    int timeEnd;
     char * ADSB_Address;
     int  ADSB_Squawk = 0;
     float  ADSB_HDG = 0;
