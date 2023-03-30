@@ -20,6 +20,9 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <cstring>
 #include <iostream>
 #include <cmath>
 #include <sys/stat.h>
@@ -31,24 +34,28 @@
 #include <time.h>
 #include <gpiod.h>
 
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <linux/spi/spidev.h>
+#include <spidev_lib++.h>
 
 struct timespec slptm;
 
 int main(int argc, char *argv[]) {
-    const char *chipname = "gpiochip0";
-    struct gpiod_chip *chip;
-    struct gpiod_line_bulk *GPIOout;
+    //const char *chipname = "gpiochip0";
+    //struct gpiod_chip *chip;
+    //struct gpiod_line_bulk *GPIOout;
     std::cout << "Starting. \n";
     // Open GPIO chip
     //chip = gpiod_chip_open_by_name(chipname);
-    std::cout << "Got GPIO chip. \n";
+    //std::cout << "Got GPIO chip. \n";
     // Open GPIO lines
     //gpiod_chip_get_all_lines(chip, GPIOout);
-    std::cout << "Got GPIO lines. \n";
+    //std::cout << "Got GPIO lines. \n";
     // Open lines for output
     //gpiod_line_request_bulk_output(GPIOout,"example1", 0);
-    std::cout << "Set GPIO lines to outputs. \n";
-
+    //std::cout << "Set GPIO lines to outputs. \n";
     /** Create ADS-B database **/
     O_ADSB_Database = new C_ADSB_Database [MaxAircraft]; //Max aircraft.
     /** Create loop for display. **/
@@ -69,13 +76,61 @@ int main(int argc, char *argv[]) {
     //pthread_join(O_Display, NULL);
     return 0;
 }
+
 /** Display Loop **/
 void F_Display(){
+    /** Open and configure SPI interface **/
+    spi_config_t spi_config;
+    uint16_t SPI_OUT[1];
+    uint8_t rx_buffer[32];
+    SPI *mySPI = NULL;
+
+    spi_config.mode=1;
+    spi_config.speed=100000;
+    spi_config.delay=0;
+    spi_config.bits_per_word=16;
+
+    mySPI=new SPI("/dev/spidev0.1",&spi_config);
+    mySPI->begin();
+    memset(SPI_OUT,0,32);
+    memset(rx_buffer,0,32);
+    /**auto fd = open("/dev/spidev0.0", O_RDWR);
+    if (fd < 0)
+    {
+        std::cout << "Cannot open /dev/spidev0.0 \n";
+    }
+    else {
+        ioctl(fd, SPI_IOC_WR_MODE, SPI_MODE_1);
+        ioctl(fd, SPI_IOC_WR_BITS_PER_WORD, 16);
+        ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, 1000000);
+        std::cout << "Opened and configured /dev/spidev0.0 successfully. \n";
+    }
+    int16_t SPI_OUT;
+    struct spi_ioc_transfer mesg[1];
+    mesg[0].tx_buf = (unsigned long)SPI_OUT;
+    mesg[0].len = 1;
+    mesg[0].delay_usecs = 0;
+    mesg[0].speed_hz = 1000000;
+    mesg[0].bits_per_word = 16;
+    mesg[0].cs_change = 0;
+    mesg[0].tx_nbits = 0;
+    mesg[0].word_delay_usecs = 0;
+    mesg[0].pad = 0;**/
+
     while(displayRun){
         for(int radarSweep=0;radarSweep<365;radarSweep++){
             for(int radarTrace=-512;radarTrace<512;radarTrace++){
                 int Xout = 512+(std::cos(radarSweep)*radarTrace);
                 int Yout = 512+(std::sin(radarSweep)*radarTrace);
+                SPI_OUT[0] = 0x9000;   //Update A
+                SPI_OUT[0] |= Xout*4;
+                mySPI->write16(SPI_OUT,1);
+                //std::this_thread::sleep_for(std::chrono::microseconds(100));
+                //ioctl(fd, SPI_IOC_MESSAGE(1), &mesg);
+                SPI_OUT[0] = 0xA000;   //Update B
+                SPI_OUT[0] |= Yout*4;
+                //mySPI->write16(SPI_OUT,1);
+                //ioctl(fd, SPI_IOC_MESSAGE(1), &mesg);
                 //gpiod_line_set_value_bulk(GPIOout,0);
             }
         }
@@ -123,7 +178,7 @@ void F_Display(){
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
     std::cout << "Display thread terminated. \n";
 }
