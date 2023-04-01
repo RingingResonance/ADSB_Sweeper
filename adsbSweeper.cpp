@@ -18,27 +18,21 @@
 
 #include "adsbSweeper.h"
 #include <fstream>
-#include <string>
 #include <sstream>
 #include <stdlib.h>
-#include <stdio.h>
 #include <cstring>
 #include <iostream>
 #include <cmath>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <thread>
-#include <pthread.h>
 #include <limits.h>
 #include <unistd.h>
 #include <time.h>
-#include <gpiod.h>
-
 #include <fcntl.h>
-#include <unistd.h>
+
+#include <spidev_lib++.h>
 #include <sys/ioctl.h>
 #include <linux/spi/spidev.h>
-#include <spidev_lib++.h>
+#include <errno.h>
 
 struct timespec slptm;
 
@@ -46,7 +40,7 @@ int main(int argc, char *argv[]) {
     //const char *chipname = "gpiochip0";
     //struct gpiod_chip *chip;
     //struct gpiod_line_bulk *GPIOout;
-    std::cout << "Starting. \n";
+    std::cout << "Starting ADS-B SWEEPER. \n";
     // Open GPIO chip
     //chip = gpiod_chip_open_by_name(chipname);
     //std::cout << "Got GPIO chip. \n";
@@ -60,8 +54,10 @@ int main(int argc, char *argv[]) {
     O_ADSB_Database = new C_ADSB_Database [MaxAircraft]; //Max aircraft.
     /** Create loop for display. **/
     std::thread DisplayThread( F_Display );
+    usleep(10);
     /** Create loop for information predictor. **/
     std::thread ADSBpredThread( F_ADSBpred );
+    usleep(10);
     /** Create loop for ADS-B information getter. **/
     std::thread ADSBgetterThread( F_ADSBgetter );
     /***********************************************/
@@ -79,61 +75,114 @@ int main(int argc, char *argv[]) {
 
 /** Display Loop **/
 void F_Display(){
+    std::cout << "Starting Display Thread. \n";
     /** Open and configure SPI interface **/
-    spi_config_t spi_config;
-    uint16_t SPI_OUT[1];
-    uint8_t rx_buffer[32];
-    SPI *mySPI = NULL;
-
-    spi_config.mode=1;
-    spi_config.speed=100000;
-    spi_config.delay=0;
-    spi_config.bits_per_word=16;
-
-    mySPI=new SPI("/dev/spidev0.1",&spi_config);
-    mySPI->begin();
-    memset(SPI_OUT,0,32);
-    memset(rx_buffer,0,32);
-    /**auto fd = open("/dev/spidev0.0", O_RDWR);
-    if (fd < 0)
-    {
-        std::cout << "Cannot open /dev/spidev0.0 \n";
+    uint8_t OutMode = SPI_MODE_0;
+    uint8_t OutBits = 8;
+    uint8_t Default = 0;
+    uint8_t TwoBytes = 2;
+    uint32_t OutSpeed = 1000000;
+    auto XY_SPI = open("/dev/spidev0.0", O_RDWR);
+    if (XY_SPI < 0){
+        std::cout << "Cannot open /dev/spidev0.0 errno: " << errno << " \n";
     }
     else {
-        ioctl(fd, SPI_IOC_WR_MODE, SPI_MODE_1);
-        ioctl(fd, SPI_IOC_WR_BITS_PER_WORD, 16);
-        ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, 1000000);
-        std::cout << "Opened and configured /dev/spidev0.0 successfully. \n";
+        if(ioctl(XY_SPI, SPI_IOC_WR_MODE, &OutMode)<0){
+            displayRun = 0;
+            std::cout << "Error 1, cannot set Write mode. errno: " << errno << " \n";
+        }
+        if(ioctl(XY_SPI, SPI_IOC_WR_MAX_SPEED_HZ, &OutSpeed)<0){
+            std::cout << "Error 2, cannot set speed. errno: " << errno << "\n";
+            displayRun = 0;
+        }
+        if(ioctl(XY_SPI, SPI_IOC_WR_BITS_PER_WORD, &OutBits)<0){
+            std::cout << "Error 3, cannot set word size. errno: " << errno << " \n";
+            displayRun = 0;
+        }
+        if(displayRun) std::cout << "Successfully opened and configured SPI interface. \n";
+        //std::cout << "Opened and configured /dev/spidev0.0 successfully. \n";
     }
-    int16_t SPI_OUT;
-    struct spi_ioc_transfer mesg[1];
-    mesg[0].tx_buf = (unsigned long)SPI_OUT;
-    mesg[0].len = 1;
-    mesg[0].delay_usecs = 0;
-    mesg[0].speed_hz = 1000000;
-    mesg[0].bits_per_word = 16;
-    mesg[0].cs_change = 0;
-    mesg[0].tx_nbits = 0;
-    mesg[0].word_delay_usecs = 0;
-    mesg[0].pad = 0;**/
-
-    while(displayRun){
-        for(int radarSweep=0;radarSweep<365;radarSweep++){
-            for(int radarTrace=-512;radarTrace<512;radarTrace++){
-                int Xout = 512+(std::cos(radarSweep)*radarTrace);
-                int Yout = 512+(std::sin(radarSweep)*radarTrace);
-                SPI_OUT[0] = 0x9000;   //Update A
-                SPI_OUT[0] |= Xout*4;
-                mySPI->write16(SPI_OUT,1);
-                //std::this_thread::sleep_for(std::chrono::microseconds(100));
-                //ioctl(fd, SPI_IOC_MESSAGE(1), &mesg);
-                SPI_OUT[0] = 0xA000;   //Update B
-                SPI_OUT[0] |= Yout*4;
-                //mySPI->write16(SPI_OUT,1);
-                //ioctl(fd, SPI_IOC_MESSAGE(1), &mesg);
-                //gpiod_line_set_value_bulk(GPIOout,0);
+    std::cout << "Setting up memory for SPI output table. \n";
+    #define SPI_OUT_Cnt 256
+    ///Default max msgCnt size seems to be 128
+    #define msgCnt 64
+    uint8_t SPI_OUTx[SPI_OUT_Cnt];
+    uint8_t SPI_OUTy[SPI_OUT_Cnt];
+    bool XYsel = 0;
+    int iX = 0; int iY = 0;
+    struct spi_ioc_transfer XYmesg[msgCnt];
+    memset (&XYmesg, 0, sizeof(XYmesg));
+    std::cout << "Generating initial SPI output table. \n";
+    for(int i=0;i<msgCnt;i++){
+        XYmesg[i].rx_buf = (unsigned long)nullptr;
+        XYmesg[i].bits_per_word = 8; // 0;
+        XYmesg[i].tx_nbits = 0; // 0;
+        XYmesg[i].word_delay_usecs = 0; // 0;
+        XYmesg[i].pad = 0; // 0;
+        if(i&0x0001){
+            XYmesg[i].speed_hz = 32000000;
+            XYmesg[i].tx_buf = (unsigned long)nullptr;
+            XYmesg[i].len = 0;
+            XYmesg[i].delay_usecs = 0; // 0
+            XYmesg[i].cs_change = 1; // 0;
+        }
+        else{
+            XYmesg[i].speed_hz = 10000000;
+            XYmesg[i].len = 2;
+            XYmesg[i].delay_usecs = 0; // 0
+            XYmesg[i].cs_change = 0; // 0;
+            if(XYsel){
+                XYmesg[i].tx_buf = (unsigned long)&SPI_OUTy[iY];
+                iY+=2;
+                XYsel=0;
+            }
+            else {
+                XYmesg[i].tx_buf = (unsigned long)&SPI_OUTx[iX];
+                iX+=2;
+                XYsel=1;
             }
         }
+    }
+    /******************************************/
+    int XYindex = 0;
+    int dspchCnt = 0;
+    while(displayRun){
+        for(int radarSweep=0;radarSweep<365;radarSweep++){
+        XYindex = 0;
+        for(int radarTrace= -512;radarTrace<512;radarTrace++){
+                ///Calculate X sweep data.
+            uint16_t Xout = (std::cos(DegToRad(radarSweep))*radarTrace)+512;
+            if(Xout>1023)Xout=1023;
+            Xout = (Xout*4)&0x0FFF;
+            Xout |= 0x1000;   //Update A, but do not latch.
+            if(XYindex<SPI_OUT_Cnt){
+                SPI_OUTx[XYindex] = (Xout / 0x0100)&0x00FF;
+                SPI_OUTx[XYindex+1] = Xout & 0x00FF;
+            }
+                ///Calculate Y sweep data.
+            int16_t Yout = (std::sin(DegToRad(radarSweep))*radarTrace)+512;
+            if(Yout>1023)Yout=1023;
+            Yout = (Yout*4)&0x0FFF;
+            Yout |= 0xA000;   //Update B and latch both A and B outputs.
+            if(XYindex<SPI_OUT_Cnt){
+                SPI_OUTy[XYindex] = (Yout / 0x0100)&0x00FF;
+                SPI_OUTy[XYindex+1] = Yout & 0x00FF;
+                XYindex+=2;
+            }
+            dspchCnt++;
+            /// Dispatch 64 bytes of data to the DACs
+            if(dspchCnt>=msgCnt){
+                    if(ioctl(XY_SPI, SPI_IOC_MESSAGE(msgCnt), &XYmesg)<0){
+                    std::cout << "Sending data to /dev/spidev0.0 failed. errno: " << errno << " \n";
+                    displayRun = 0;    //Kill the display if write failure.
+                    break;
+                }
+                XYindex=0;
+                dspchCnt=0;
+            }
+        }
+        if(!displayRun)break;
+    }
         std::cout << "\x1B[2J\x1B[H";
         char airplane[3001];
         char border[100];
@@ -176,16 +225,18 @@ void F_Display(){
                 << "  X:" << O_ADSB_Database[i].CALC_Xdistance << "  Y:" << O_ADSB_Database[i].CALC_Ydistance << "\n";
                 O_ADSB_Database[i].AircraftAsleepTimer--;
             }
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            //std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
-        //std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
+    close(XY_SPI);
     std::cout << "Display thread terminated. \n";
 }
 
 
 /** ADS-B loop **/
 void F_ADSBgetter(){
+    std::cout << "Starting ADS-B Receiver Thread. \n";
     char ADSB_MESSAGE[1000];
     char ICAOadr[20];
     int  ICAOsquak;
@@ -194,6 +245,7 @@ void F_ADSBgetter(){
     float ICAOlat;
     float ICAOlon;
     while(ADSBgRun){
+            if(!displayRun)ADSBgRun=0;
            for (int i=0;i<1000;i++)ADSB_MESSAGE[i]=0;
            std::cin.clear();
            std::cin >> &ADSB_MESSAGE[0];
@@ -349,7 +401,9 @@ void F_ADSBgetter(){
 }
 
 void F_ADSBpred(){
+    std::cout << "Starting ADS-B Interp Thread. \n";
     while(ADSBpRun){
+            if(!displayRun)ADSBpRun=0;
         for(int i=0;i<MaxAircraft;i++){
             if(O_ADSB_Database[i].AircraftAsleepTimer!=Sleeping
                 &&O_ADSB_Database[i].ADSB_preXY
@@ -382,7 +436,7 @@ float ABSfloat(float in){
     return i;
 }
 
-float DegToRad(int in){
-    return (in*PI/180);
+float DegToRad(float in){
+    return (in*PI)/180;
 }
 

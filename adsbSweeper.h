@@ -57,7 +57,7 @@ bool displayRun = 1;
 bool latFound = NotFound;
 bool lonFound = NotFound;
 float ABSfloat(float);
-float DegToRad(int);
+float DegToRad(float);
 void F_Display(void);
 void F_ADSBgetter(void);
 void F_ADSBpred(void);
