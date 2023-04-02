@@ -22,8 +22,8 @@
 #define sweepTime 2
 #define zoomFactorX 10
 #define zoomFactorY 5
-#define MaxRangeX 5
-#define MaxRangeY 3
+#define MaxRangeX 4
+#define MaxRangeY 4
 
 #define NotFound 0
 #define Found 1
@@ -39,6 +39,21 @@
 
 #define homeLon -97.088857
 #define homeLat 32.831865
+
+///Default max msgCnt size seems to be 128
+#define msgCnt 8        ///8 seems to work with 1024 resolution. Nothing else works and I'm not sure why.
+#define intCnt 4
+#define SPI_OUT_Cnt 32
+#define SPI_INT_Cnt 16
+unsigned char SPI_OUT[SPI_OUT_Cnt];
+unsigned char INTEN_OUT[SPI_INT_Cnt];
+int XYindex = 0;
+int INTENindex = 0;
+int Intensity = 0;
+int Bright = 0;
+int dspchCnt = 0;
+int radarSweep = 0;
+int radarTrace = 0;
 
 /** Strings of text to look for from dump1090 **/
 char DSP_ID[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
