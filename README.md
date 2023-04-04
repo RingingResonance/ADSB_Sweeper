@@ -1,6 +1,6 @@
 # ADSB_Sweeper
 
-Copyright: Jarrett Cigainero October 2023
+Copyright: Jarrett Cigainero 2023
 
 This program is provided without any warranty.
 
