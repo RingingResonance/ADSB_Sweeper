@@ -50,7 +50,7 @@ Copyright: Jarrett Cigainero October 2023
 
 -S :: Aircraft 'Sleep' Time in half seconds. How long an aircraft stays
 
-      in database before being deleted. Default: <20> 10 seconds.
+in database before being deleted. Default: <20> 10 seconds.
       
 -M :: Max number of Aircraft before new ones are rejected. Default: 26
 
