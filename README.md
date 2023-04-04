@@ -4,23 +4,15 @@ Copyright: Jarrett Cigainero 2023
 
 This program is provided without any warranty.
 
-A program to generate the proper analog signals to send to a real RADAR scope tube using ADS-B data piped from dump1090
+A program to generate the proper analog signals to send to a real RADAR scope tube using ADS-B data piped from dump1090.
 
 ** Not for use in air navigation, in-flight situational awareness, or in-flight traffic monitoring. **
 
-Uses the SPI output to send data to two LTC1662 DACs to generate real-time sweep and intensity data for showing ADS-B traffic
+Uses the SPI output to send data to two LTC1662 DACs to generate real-time sweep and intensity data for showing ADS-B traffic on an XY scope, or oscilloscope in XY mode. The XY DAC is conntected to CE0, and the intensity DAC is connected to CE1 with both of it's outputs copied so it doesn't matter which one you connect.
 
-on an XY scope, or oscilloscope in XY mode. The XY DAC is conntected to CE0, and the intensity DAC is connected to CE1 with
+The current version of this software is slow, and pushes Linux and the Raspi to it's limits in terms of speed. I plan on further optimizations later on, but as it is right now the sweep speed is what you get.
 
-both of it's outputs copied so it doesn't matter which one you connect.
-
-The current version of this software is slow, and pushes Linux and the Raspi to it's limits in terms of speed. I plan on
-
-further optimizations later on, but as it is right now the sweep speed is what you get.
-
-This program requires dump1090 or equivilant data to be piped into it to function. You must also enable the SPI 
-
-interface on the Raspi. I'm using a Raspi 3b. I have no idea what kind of performance you will get on other devices.
+This program requires dump1090 or equivilant data to be piped into it to function. You must also enable the SPI interface on the Raspi. I'm using a Raspi 3b. I have no idea what kind of performance you will get on other devices.
 
 If you don't see /dev/spidev0.0 and /dev/spidev0.1 then it isn't enabled or something else is wrong.
 
