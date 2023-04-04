@@ -46,7 +46,7 @@ int radarTrace = 0;
 bool runDACscope = 0;
 float distFactor = 128;
 float blipScale = 1;
-float blipy = 0;
+float blipy = 0.025;
 
 void ScopeCalc() {
   ///Calculate X sweep data.
