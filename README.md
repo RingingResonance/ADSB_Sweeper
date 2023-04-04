@@ -1,6 +1,10 @@
 # ADSB_Sweeper
 
-A program to generate the proper analog signals to send to a real RADAR scope tube using ADS-B data from dump1090
+Copyright: Jarrett Cigainero October 2023
+
+This program is provided without any warranty.
+
+A program to generate the proper analog signals to send to a real RADAR scope tube using ADS-B data piped from dump1090
 
 ** Not for use in air navigation, in-flight situational awareness, or in-flight traffic monitoring. **
 
@@ -23,10 +27,6 @@ If you don't see /dev/spidev0.0 and /dev/spidev0.1 then it isn't enabled or some
 Usage Example:
 
 dump1090-mutability | ./adsbSweeper -D -C -a 32.757541 -o -97.076364 -R 5 -m 5
-
-This program is provided without any warranty.
-
-Copyright: Jarrett Cigainero October 2023
 
            **This program is not intended for in-flight use. **
            
