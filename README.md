@@ -34,7 +34,7 @@ dump1090-mutability | ./adsbSweeper -D -C -a 32.757541 -o -97.076364 -R 5 -m 5
 
 -R :: Scope Radius. Trace Length in nm. Default: 4nm
 
--B :: Blip-Size Scale-Factor. Default: 1"
+-B :: Blip-Size Scale-Factor. Default: 1
 
 -a :: Manual Latitude setting.
 
