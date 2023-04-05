@@ -47,24 +47,30 @@ bool runDACscope = 0;
 float distFactor = 128;
 float blipScale = 1;
 float blipy = 0.025;
+int blankInten = 1023;
+int dimInten = 512;
+int scaleInten = 470;
+int blipInten = 0;
 
 void ScopeCalc() {
   ///Calculate X sweep data.
   uint16_t Xout = (std::cos(DegToRad(radarSweep)) * radarTrace) + 512;
-  if (Xout > 1023) Xout = 1023;
   uint16_t XTout = ((Xout * 4) & 0x0FFF) | 0x1000; ///Update A, but do not latch.
   SPI_OUT[XYindex] = (XTout / 0x0100) & 0x00FF;
   SPI_OUT[XYindex + 1] = XTout & 0x00FF;
   ///Calculate Y sweep data.
   int16_t Yout = (std::sin(DegToRad(radarSweep)) * radarTrace) + 512;
-  if (Yout > 1023) Yout = 1023;
   uint16_t YTout = ((Yout * 4) & 0x0FFF) | 0xA000; ///Update B and latch both A and B outputs.
   SPI_OUT[XYindex + 2] = (YTout / 0x0100) & 0x00FF;
   SPI_OUT[XYindex + 3] = YTout & 0x00FF;
   XYindex += 4;
   ///Calculate Intensity data.
-  if (radarTrace > 2 && radarTrace < 510) {
-    Bright = 512; ///Give some brightness.
+  if (radarTrace > 2 && radarTrace < 512) {
+        ///Draw Scale.
+    if(radarTrace == 64 || radarTrace == 128 || radarTrace == 192
+    || radarTrace == 256 || radarTrace == 320 || radarTrace == 384
+    || radarTrace == 448 || radarTrace == 510)Bright = scaleInten;
+    else Bright = dimInten; ///Give some brightness.
     float XaComp = Xout;
     float YaComp = Yout;
     float XdComp = (XaComp - 512) / distFactor;
@@ -73,10 +79,10 @@ void ScopeCalc() {
         ///Get distance from point of measurement to aircrafts.
       float distance = sqrt(pow((XdComp - (-1 * O_ADSB_Database[b].CALC_Xdistance)), 2)) + (pow((YdComp - O_ADSB_Database[b].CALC_Ydistance), 2));
       if (distance < blipy && O_ADSB_Database[b].AircraftAsleepTimer) {
-        Bright = 0; ///We got a ping! Full brightness!
+        Bright = blipInten; ///We got a ping! Full brightness!
       }
     }
-  } else Bright = 1023; ///All the way dark.
+  } else Bright = blankInten; ///All the way dark.
   Intensity = ((Bright * 4) & 0x0FFF) | 0xF000; ///Update A&B with same data and latch.
   INTEN_OUT[INTENindex] = (Intensity / 0x0100) & 0x00FF;
   INTEN_OUT[INTENindex + 1] = Intensity & 0x00FF;
@@ -201,7 +207,7 @@ int F_DACscope() {
       ///Trace
       INTENindex = 0;
       XYindex = 0;
-      for (radarTrace = -512; radarTrace < 511; radarTrace++) {
+      for (radarTrace = -512; radarTrace < 512; radarTrace++) {
         ///Run a thread to calculate signals.
         ScopeCalc();
         /// Dispatch some data to the DACs

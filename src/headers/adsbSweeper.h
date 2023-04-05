@@ -38,6 +38,10 @@ const char *helpText[]{
 "-S :: Aircraft 'Sleep' Time in half seconds. How long an aircraft stays\n"
 "      in database before being deleted. Default: <20> 10 seconds. \n"
 "-M :: Max number of Aircraft before new ones are rejected. Default: 26\n"
+"-b :: Blip Brightness Value. Default = 0\n"
+"-d :: Trace Brightness Value. Default = 512\n"
+"-s :: Scale Brightness Value. Default = 470\n"
+"-c :: Blanking Value. Default = 1023\n"
 "\n"
 };
 

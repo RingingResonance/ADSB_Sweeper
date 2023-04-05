@@ -104,6 +104,26 @@ int GetArgs(int argc, char **argv){
                 if(argNumber>=0&&argNumber<=1000)blipScale=argNumber;
                 else {std::cout << "\nArgument Value Out Of Range For Blip Scale: " << &argv[i][0] << ", limit 0 - 1000\n"; return 1;}
                 break;
+
+            case 'b':       ///Blip Brightness.
+                if(argNumber>=0&&argNumber<=1023)blipInten=argNumber;
+                else {std::cout << "\nArgument Value Out Of Range For Blip Brightness: " << &argv[i][0] << ", limit 0 - 1023\n"; return 1;}
+                break;
+
+            case 'd':       ///Dim Trace Brightness.
+                if(argNumber>=0&&argNumber<=1023)dimInten=argNumber;
+                else {std::cout << "\nArgument Value Out Of Range For Trace Brightness: " << &argv[i][0] << ", limit 0 - 1023\n"; return 1;}
+                break;
+
+            case 's':       ///Scale Brightness.
+                if(argNumber>=0&&argNumber<=1023)scaleInten=argNumber;
+                else {std::cout << "\nArgument Value Out Of Range For Scale Brightness: " << &argv[i][0] << ", limit 0 - 1023\n"; return 1;}
+                break;
+
+            case 'c':       ///Blanking Brightness.
+                if(argNumber>=0&&argNumber<=1023)blankInten=argNumber;
+                else {std::cout << "\nArgument Value Out Of Range For Blanking: " << &argv[i][0] << ", limit 0 - 1023\n"; return 1;}
+                break;
             case 'h':       ///Help Text.
                 std::cout << helpText[0]; return 1;
                 break;

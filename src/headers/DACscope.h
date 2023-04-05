@@ -29,5 +29,9 @@ extern int F_DACscope(void);
 extern bool runDACscope;
 extern float distFactor;
 extern float blipScale;
+extern int blankInten;
+extern int dimInten;
+extern int scaleInten;
+extern int blipInten;
 
 #endif // PICTOVECTWAVE_H
