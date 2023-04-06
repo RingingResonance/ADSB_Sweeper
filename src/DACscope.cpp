@@ -38,56 +38,70 @@ unsigned char SPI_OUT[SPI_OUT_Cnt];
 unsigned char INTEN_OUT[SPI_INT_Cnt];
 int XYindex = 0;
 int INTENindex = 0;
-int Intensity = 0;
-int Bright = 0;
 int dspchCnt = 0;
 int radarSweep = 0;
 int radarTrace = 0;
 bool runDACscope = 0;
-float distFactor = 128;
 float blipScale = 1;
-float blipy = 0.025;
 int blankInten = 1023;
 int dimInten = 512;
 int scaleInten = 470;
 int blipInten = 0;
 
-void ScopeCalc() {
-  ///Calculate X sweep data.
-  uint16_t Xout = (std::cos(DegToRad(radarSweep)) * radarTrace) + 512;
-  uint16_t XTout = ((Xout * 4) & 0x0FFF) | 0x1000; ///Update A, but do not latch.
-  SPI_OUT[XYindex] = (XTout / 0x0100) & 0x00FF;
-  SPI_OUT[XYindex + 1] = XTout & 0x00FF;
-  ///Calculate Y sweep data.
-  int16_t Yout = (std::sin(DegToRad(radarSweep)) * radarTrace) + 512;
-  uint16_t YTout = ((Yout * 4) & 0x0FFF) | 0xA000; ///Update B and latch both A and B outputs.
-  SPI_OUT[XYindex + 2] = (YTout / 0x0100) & 0x00FF;
-  SPI_OUT[XYindex + 3] = YTout & 0x00FF;
-  XYindex += 4;
-  ///Calculate Intensity data.
-  if (radarTrace > 2 && radarTrace < 512) {
+float distFactRecip;
+float distFactor = 128.0f;
+float blipy = 0.035f;
+float blipy_sq = 0.0f;
+
+inline static float sq(float x) { return x*x; }
+void ScopeCalc(float cosCalc, float sinCalc) {
+    ///Calculate X sweep data.
+    uint16_t Xout = (cosCalc * radarTrace) + 512;
+    uint16_t XTout = ((Xout << 2) & 0x0FFF) | 0x1000; ///Update A, but do not latch.
+    SPI_OUT[XYindex    ] = (XTout >> 8);
+    SPI_OUT[XYindex + 1] =  XTout;
+    ///Calculate Y sweep data.
+    int16_t Yout = (sinCalc * radarTrace) + 512;
+    uint16_t YTout = ((Yout << 2) & 0x0FFF) | 0xA000; ///Update B and latch both A and B outputs.
+    SPI_OUT[XYindex + 2] = (YTout >> 8);
+    SPI_OUT[XYindex + 3] =  YTout;
+    XYindex += 4;
+
+    ///Calculate Intensity data.
+    uint16_t Bright;
+    if ( radarTrace>2 && radarTrace<512 ) {
         ///Draw Scale.
-    if(radarTrace == 64 || radarTrace == 128 || radarTrace == 192
-    || radarTrace == 256 || radarTrace == 320 || radarTrace == 384
-    || radarTrace == 448 || radarTrace == 510)Bright = scaleInten;
-    else Bright = dimInten; ///Give some brightness.
-    float XaComp = Xout;
-    float YaComp = Yout;
-    float XdComp = (XaComp - 512) / distFactor;
-    float YdComp = (YaComp - 512) / distFactor;
-    for (int b = 0; b < MaxAircraft; b++) {
-        ///Get distance from point of measurement to aircrafts.
-      float distance = sqrt(pow((XdComp - (-1 * O_ADSB_Database[b].CALC_Xdistance)), 2)) + (pow((YdComp - O_ADSB_Database[b].CALC_Ydistance), 2));
-      if (distance < blipy && O_ADSB_Database[b].AircraftAsleepTimer) {
-        Bright = blipInten; ///We got a ping! Full brightness!
-      }
+        if ((radarTrace&~0x003F)==radarTrace){
+            Bright = scaleInten;
+        } else {
+            Bright = dimInten; ///Give some brightness.
+        }
+
+        float XaComp = Xout;
+        float YaComp = Yout;
+        float XdComp = (XaComp - 512) * (distFactRecip);
+        float YdComp = (YaComp - 512) * (distFactRecip);
+        for ( int b=0; b<MaxAircraft; ++b ) {
+            if (O_ADSB_Database[b].AircraftAsleepTimer) {
+                ///Get distance from point of measurement to aircrafts.
+                float dist_sq =
+                    sq( XdComp + O_ADSB_Database[b].CALC_Xdistance ) +
+                    sq( YdComp - O_ADSB_Database[b].CALC_Ydistance )
+                ;
+                if ( dist_sq < blipy_sq ) {
+                    Bright = blipInten; ///We got a ping! Full brightness!
+                    break;
+                }
+            }
+        }
+    } else {
+        Bright = blankInten; ///All the way dark.
     }
-  } else Bright = blankInten; ///All the way dark.
-  Intensity = ((Bright * 4) & 0x0FFF) | 0xF000; ///Update A&B with same data and latch.
-  INTEN_OUT[INTENindex] = (Intensity / 0x0100) & 0x00FF;
-  INTEN_OUT[INTENindex + 1] = Intensity & 0x00FF;
-  INTENindex += 2;
-  dspchCnt++;
+    uint16_t Intensity = ((Bright << 2) & 0x0FFF) | 0xF000; ///Update A&B with same data and latch.
+    INTEN_OUT[INTENindex    ] = (Intensity >> 8);
+    INTEN_OUT[INTENindex + 1] =  Intensity;
+    INTENindex += 2;
+    ++dspchCnt;
 }
 
 /** DAC Scope Loop **/
@@ -100,7 +114,9 @@ int F_DACscope() {
   uint8_t Default = 0;
   uint8_t TwoBytes = 2;
   uint32_t OutSpeed = 1000000;
-  blipy = (512/distFactor)*(blipScale*0.00625);
+  distFactRecip = 1.0f / distFactor;
+  blipy = (512/distFactor)*(blipScale*0.00875);
+  blipy_sq = blipy * blipy;
   auto XY_SPI = open("/dev/spidev0.0", O_RDWR);
   auto INTEN_SPI = open("/dev/spidev0.1", O_RDWR);
   ///Configure the XY output.
@@ -207,9 +223,12 @@ int F_DACscope() {
       ///Trace
       INTENindex = 0;
       XYindex = 0;
+      float rad = DegToRad(radarSweep);
+      float cosCalc = std::cos(rad);
+      float sinCalc = std::sin(rad);
       for (radarTrace = -512; radarTrace < 512; radarTrace++) {
         ///Run a thread to calculate signals.
-        ScopeCalc();
+        ScopeCalc(cosCalc,sinCalc);
         /// Dispatch some data to the DACs
         if (dspchCnt == msgCnt) {
           if (ioctl(XY_SPI, SPI_IOC_MESSAGE(msgCnt), & XYmesg) < 0) {
