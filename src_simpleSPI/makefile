@@ -1,7 +1,4 @@
-all: adsbSweeper.o ADSBdata.o CLIscope.o DACscope.o
-	g++ -std=c++20 -pthread -o ../adsbSweeper ./lib/adsbSweeper.o ./lib/ADSBdata.o ./lib/CLIscope.o ./lib/DACscope.o -lgpiod
-
-DAC.o: DACscope.o
+main: adsbSweeper.o ADSBdata.o CLIscope.o DACscope.o
 	g++ -std=c++20 -pthread -o ../adsbSweeper ./lib/adsbSweeper.o ./lib/ADSBdata.o ./lib/CLIscope.o ./lib/DACscope.o -lgpiod
 
 adsbSweeper.o: adsbSweeper.cpp

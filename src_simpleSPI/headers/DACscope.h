@@ -20,38 +20,11 @@
 #define DACscope_H
 
 
-#define DACscopeThreadCnt 2
-
-///Screen parameters
-#define DEGsteps 360
-#define DACresolution 1024
-#define XYresDivider 4
-
-///Actual DAC resolution
-#define XYresLowLim -1*(DACresolution/2)
-#define XYresHighLim DACresolution/2
-
-///Number of bulk messages to send.
-#define msgCnt 4
-
-///Size of SPI buffer.
-#define XYdataCnt msgCnt*2
-
-///Number of DAC samples per screen sweep.
-#define XYpreCalcSweep (DEGsteps*DACresolution)/XYresDivider
-
-///Bulk SPI system calls.
-#define bulkTransFactor XYpreCalcSweep/XYdataCnt
-
-///Allocation for how much memory to use.
-#define SPI_OUT_Cnt XYpreCalcSweep*4
-
-///Intensity data
-#define SyncCnt 1
-#define INTdataCnt 2
-#define SPI_INT_Cnt XYpreCalcSweep*2
-
-void PreCalcSweep(void);
+///Default max msgCnt size seems to be 128
+#define msgCnt 8        ///8 seems to work with 1024 resolution. Nothing else works and I'm not sure why.
+#define intCnt 4
+#define SPI_OUT_Cnt 32
+#define SPI_INT_Cnt 16
 extern int F_DACscope(void);
 extern bool runDACscope;
 extern float distFactor;
@@ -60,11 +33,5 @@ extern int blankInten;
 extern int dimInten;
 extern int scaleInten;
 extern int blipInten;
-
-class C_bulkSweepCalc{
-public:
-    bool dataReady=0;
-    static int ScopeCalc(void);
-};extern C_bulkSweepCalc* O_bulkSweepCalc;
 
 #endif // PICTOVECTWAVE_H

@@ -46,12 +46,12 @@ bool bufferSel = 0;
 bool IntenThrdsRun = 1;
 int procID=0;
 
-uint16_t Xout[XYpreCalcSweep];
-uint16_t Yout[XYpreCalcSweep];
-uint8_t SPI_OUT[SPI_OUT_Cnt];
+unsigned char Xout[XYpreCalcSweep];
+unsigned char Yout[XYpreCalcSweep];
+unsigned char SPI_OUT[SPI_OUT_Cnt];
 unsigned char INTEN_OUT[SPI_INT_Cnt][2];
 unsigned char XYout[XYdataCnt];
-unsigned char Intenout[msgCnt];
+unsigned char Intenout[INTdataCnt];
 
 float distFactRecip;
 float distFactor = 128.0f;
@@ -72,7 +72,7 @@ int F_DACscope() {
   uint8_t OutBits = 8;
   uint8_t Default = 0;
   uint8_t TwoBytes = 2;
-  uint32_t OutSpeed = 32000000;
+  uint32_t OutSpeed = 500000;
   distFactRecip = 1.0f / distFactor;
   blipy = (512/distFactor)*(blipScale*0.00875);
   blipy_sq = blipy * blipy;
@@ -117,47 +117,56 @@ int F_DACscope() {
     if (runDACscope) std::cout << "Successfully opened and configured /dev/spidev0.1 \n";
   }
   std::cout << "Setting up memory for SPI output table. \n";
-  struct spi_ioc_transfer XYmesg[msgCnt*2];
-  struct spi_ioc_transfer INTENmesg[SyncCnt];
-  memset( &XYmesg, 0, sizeof(XYmesg));
-  memset( &INTENmesg, 0, sizeof(INTENmesg));
+  struct spi_ioc_transfer XYmesg[msgCnt];
+  struct spi_ioc_transfer INTENmesg[intCnt];
+  memset( & XYmesg, 0, sizeof(XYmesg));
+  memset( & INTENmesg, 0, sizeof(INTENmesg));
+  int iXY = 0;
   std::cout << "Generating initial SPI output tables. \n";
-  ///Need to send 16 bits but the Raspi's hardware only supports 8 bits.
   ///Do XY
-  int iInt = 0;
-  bool iIntINC = 0;
-  ///Organize the pointers to alternate between XY and Intensity data.
-  for (int i = 0; i < msgCnt*2; i++) {
+  for (int i = 0; i < msgCnt; i++) {
     XYmesg[i].rx_buf = (unsigned long) nullptr;
     XYmesg[i].bits_per_word = 8; // 0;
     XYmesg[i].tx_nbits = 0; // 0;
-    XYmesg[i].pad = 0; // 0;
     XYmesg[i].word_delay_usecs = 0; // 0;
-    XYmesg[i].speed_hz = 12000000;
-    XYmesg[i].len = 2;
-    XYmesg[i].delay_usecs = 0; // 0
-    XYmesg[i].cs_change = 1; /// Bring CS high between messages. Right? Is this how this god-forsaken driver works? IDK. So much conflicting info on the net...
-    if(i&0x0001){
-        XYmesg[i].tx_buf = (unsigned long) &XYout[iInt*2];
-        if(iIntINC){iInt++; iIntINC=0;}
-        else iIntINC=1;
+    XYmesg[i].pad = 0; // 0;
+    if (i & 0x0001) {
+      XYmesg[i].speed_hz = 5000000;
+      XYmesg[i].tx_buf = (unsigned long) nullptr;
+      XYmesg[i].len = 0;
+      XYmesg[i].delay_usecs = 0; // 0
+      XYmesg[i].cs_change = 1; // 0;
     }
     else {
-        XYmesg[i].tx_buf = (unsigned long) &Intenout[i];
+      XYmesg[i].speed_hz = 5000000;
+      XYmesg[i].len = 2;
+      XYmesg[i].delay_usecs = 0; // 0
+      XYmesg[i].cs_change = 0; // 0;
+        XYmesg[i].tx_buf = (unsigned long) & XYout[iXY];
+        XYsel = 1;
+      iXY += 2;
     }
   }
-  ///Do sync pulse. Using CE1 for this.
-  for (int i = 0; i < SyncCnt; i++) {
+  ///Do INTENSITY
+  for (int i = 0; i < intCnt; i++) {
     INTENmesg[i].rx_buf = (unsigned long) nullptr;
     INTENmesg[i].bits_per_word = 8; // 0;
     INTENmesg[i].tx_nbits = 0; // 0;
     INTENmesg[i].word_delay_usecs = 0; // 0;
     INTENmesg[i].pad = 0; // 0;
-    INTENmesg[i].speed_hz = 32000000;
-    INTENmesg[i].len = 0;
-    INTENmesg[i].delay_usecs = 0; // 0
-    INTENmesg[i].cs_change = 0; // 0;
-    INTENmesg[i].tx_buf = (unsigned long) nullptr;
+    if (i & 0x0001) {
+      INTENmesg[i].speed_hz = 32000000;
+      INTENmesg[i].tx_buf = (unsigned long) nullptr;
+      INTENmesg[i].len = 0;
+      INTENmesg[i].delay_usecs = 2; // 0
+      INTENmesg[i].cs_change = 1; // 0;
+    } else {
+      INTENmesg[i].speed_hz = 10000000;
+      INTENmesg[i].len = 2;
+      INTENmesg[i].delay_usecs = 0; // 0
+      INTENmesg[i].cs_change = 0; // 0;
+      INTENmesg[i].tx_buf = (unsigned long) &Intenout[i]; ///'i' is only ever powers of two when it gets here anyways.
+    }
   }
   /******************************************/
     PreCalcSweep();   ///Pre-Calc XY position data.
@@ -168,27 +177,30 @@ int F_DACscope() {
     usleep(100);
     procID++;
     std::thread IntensityThread2(O_bulkSweepCalc[1].ScopeCalc);
+    usleep(100);
+    procID++;
+    std::thread IntensityThread3(O_bulkSweepCalc[2].ScopeCalc);
+    usleep(100);
+    procID++;
+    std::thread IntensityThread4(O_bulkSweepCalc[3].ScopeCalc);
     std::cout << "DACscope Running. \n";
     while (runDACscope) {
         /// Dispatch data to the DACs if data is ready.
-        if(O_bulkSweepCalc[0].dataReady && O_bulkSweepCalc[1].dataReady){
+        if(O_bulkSweepCalc[0].dataReady && O_bulkSweepCalc[1].dataReady
+        && O_bulkSweepCalc[2].dataReady && O_bulkSweepCalc[3].dataReady){
+            std::cout << "New Screen \n";
             if(bufferSel)bufferSel=0; else bufferSel=1; ///Change write-to buffer.
             for(int i=0;i<DACscopeThreadCnt;i++){O_bulkSweepCalc[i].dataReady=0;}   ///Get the threads running again.
             ///Output the data.
-            for(int i=0;i<bulkTransFactor;i++){
-                ///Send any data out /dev/spidev0.1 to sync the external CS logic.
-                if (ioctl(INTEN_SPI, SPI_IOC_MESSAGE(SyncCnt), & INTENmesg) < 0) {
+            for(int i=0;i<368280;i++){
+                /**for(int d=0;d<2;d++){Intenout[d]=INTEN_OUT[d+(i*2)][!bufferSel];}
+                if (ioctl(INTEN_SPI, SPI_IOC_MESSAGE(intCnt), & INTENmesg) < 0) {
                     std::cout << "Sending data to /dev/spidev0.1 failed. errno: " << errno << " \n";
                     runDACscope = 0; //Kill the display if write failure.
                     break;
-                }
-
-                ///Transfer XY and Intensity data.
-                for(int d=0;d<msgCnt;d++){Intenout[d]=INTEN_OUT[d+(i*msgCnt)][!bufferSel];}
-
-                for(int d=0;d<XYdataCnt;d++){XYout[d]=SPI_OUT[d+(i*XYdataCnt)];}
-
-                if (ioctl(XY_SPI, SPI_IOC_MESSAGE(msgCnt*2), &XYmesg) < 0) {
+                }**/
+                for(int d=0;d<4;d++){XYout[d]=SPI_OUT[d+(i*4)];}
+                if (ioctl(XY_SPI, SPI_IOC_MESSAGE(msgCnt), & XYmesg) < 0) {
                     std::cout << "Sending data to /dev/spidev0.0 failed. errno: " << errno << " \n";
                     runDACscope = 0; //Kill the display if write failure.
                     break;
@@ -201,6 +213,8 @@ int F_DACscope() {
   IntenThrdsRun=0;
   //IntensityThread1.join;
   //IntensityThread2.join;
+  //IntensityThread3.join;
+  //IntensityThread4.join;
   std::cout << "DAC Scope thread terminated. \n";
   return 0;
 }
@@ -211,24 +225,24 @@ int C_bulkSweepCalc::ScopeCalc(void) {
     int SWP_HighLimit = (XYpreCalcSweep/DACscopeThreadCnt)*(myID+1);
     while(IntenThrdsRun){
         if(!O_bulkSweepCalc[myID].dataReady){
+            std::cout << "processing. \n";
             int INTENindex = (SPI_INT_Cnt/DACscopeThreadCnt)*myID;
             ///Calculate Intensity data.
             uint16_t Bright;
             for(int pcIndex = SWP_LowLimit; pcIndex<SWP_HighLimit;pcIndex++){
-                int radarTrace = ((pcIndex*XYresDivider) & 0x03FF)-512;
-                if (radarTrace>2) {
+                if ( 1 ) {
                     ///Draw Scale.
-                    if ((radarTrace&~0x003F)==radarTrace){
-                        Bright = scaleInten; ///Give a little more/less brightness.
+                    /**if ((radarTrace&~0x003F)==radarTrace){
+                        Bright = scaleInten;
                     }
                     else {
                         Bright = dimInten; ///Give some brightness.
-                    }
+                    }**/
 
                     float XaComp = Xout[pcIndex];
                     float YaComp = Yout[pcIndex];
-                    float XdComp = (XaComp - XYresHighLim) * (distFactRecip);
-                    float YdComp = (YaComp - XYresHighLim) * (distFactRecip);
+                    float XdComp = (XaComp - 512) * (distFactRecip);
+                    float YdComp = (YaComp - 512) * (distFactRecip);
                     for ( int b=0; b<MaxAircraft; ++b ) {
                         if (O_ADSB_Database[b].AircraftAsleepTimer) {
                             ///Get distance from point of measurement to aircrafts.
@@ -238,7 +252,10 @@ int C_bulkSweepCalc::ScopeCalc(void) {
                             if ( dist_sq < blipy_sq ) {
                                 Bright = blipInten; ///We got a ping! Full brightness!
                                 break;
-                }}}}
+                            }
+                        }
+                    }
+                }
                 else {
                     Bright = blankInten; ///All the way dark.
                 }
@@ -249,7 +266,6 @@ int C_bulkSweepCalc::ScopeCalc(void) {
             }
             O_bulkSweepCalc[myID].dataReady=1;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     return 0;
 }
@@ -258,23 +274,25 @@ int C_bulkSweepCalc::ScopeCalc(void) {
 void PreCalcSweep(void){
     std::cout << "Generating XY data. \n";
 ///Sweep
-    unsigned int XYindex = 0;
-    for (int radarSweep = 0; radarSweep < DEGsteps; radarSweep++) {
+    int XYSPIindex = 0;
+    int XYindex = 0;
+    for (int radarSweep = 0; radarSweep < 360; radarSweep++) {
         ///Trace
         float rad = DegToRad(radarSweep);
         float cosCalc = std::cos(rad);
         float sinCalc = std::sin(rad);
-        for (int radarTrace = XYresLowLim; radarTrace < XYresHighLim; radarTrace+=XYresDivider) {
+        for (int radarTrace = -512; radarTrace < 512; radarTrace++) {
             ///Calculate X sweep data.
-            uint16_t XUout = Xout[XYindex] = (cosCalc * radarTrace) + XYresHighLim;
+            uint16_t XUout = Xout[XYindex] = (cosCalc * radarTrace) + 512;
             uint16_t XTout = ((XUout << 2) & 0x0FFF) | 0x1000; ///Update A, but do not latch.
-            SPI_OUT[(XYindex*4)  ] = (XTout >> 8);
-            SPI_OUT[(XYindex*4)+1] =  XTout;
+            SPI_OUT[XYSPIindex    ] = (XTout >> 8);
+            SPI_OUT[XYSPIindex + 1] =  XTout;
             ///Calculate Y sweep data.
-            uint16_t YUout = Yout[XYindex] = (sinCalc * radarTrace) + XYresHighLim;
+            int16_t YUout = Yout[XYindex] = (sinCalc * radarTrace) + 512;
             uint16_t YTout = ((YUout << 2) & 0x0FFF) | 0xA000; ///Update B and latch both A and B outputs.
-            SPI_OUT[(XYindex*4)+2] = (YTout >> 8);
-            SPI_OUT[(XYindex*4)+3] =  YTout;
+            SPI_OUT[XYSPIindex + 2] = (YTout >> 8);
+            SPI_OUT[XYSPIindex + 3] =  YTout;
+            XYSPIindex += 4;
             XYindex++;
         }
     }
