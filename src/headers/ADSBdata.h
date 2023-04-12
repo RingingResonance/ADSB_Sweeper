@@ -53,6 +53,8 @@ extern int  sweeptimer;
 extern bool addressFound;
 extern bool ADSBgRun;
 extern bool ADSBpRun;
+extern bool runDACscope;
+extern bool runCLIscope;
 extern bool latFound;
 extern bool lonFound;
 

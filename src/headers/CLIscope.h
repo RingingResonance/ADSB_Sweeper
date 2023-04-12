@@ -23,7 +23,6 @@
 #define zoomFactorY 5
 
 static char DSP_ID[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ%"};
-extern bool runCLIscope;
-extern void CLIrScope(void);
+extern int CLIrScope(void);
 
 #endif // PICTOVECTWAVE_H

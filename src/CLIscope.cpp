@@ -32,7 +32,8 @@
 
 bool runCLIscope = 0;
 
-void CLIrScope(void){
+int CLIrScope(void){
+    if(!runCLIscope)return 0;
     while(runCLIscope){
     std::cout << "\x1B[2J\x1B[H";
     char airplane[3001];
@@ -86,5 +87,10 @@ void CLIrScope(void){
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
+    ///Kill all other threads if we crash.
+    ADSBpRun=0;
+    ADSBgRun=0;
+    runDACscope=0;
     std::cout << "CLI scope thread terminated. \n";
+    return 0;
 }

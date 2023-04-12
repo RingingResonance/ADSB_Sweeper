@@ -42,10 +42,9 @@ int blankInten = 1023;
 int dimInten = 512;
 int scaleInten = 470;
 int blipInten = 0;
-bool bufferSel = 0;
-bool OutBufSel = 0;
+bool InBufferSel = 0;
 bool OutBufRdy[2] = {0,0};
-bool bSel = 0;
+bool OutBufSel = 0;
 int procID=0;
 int XY_SPI = 0;
 int INTEN_SPI = 0;
@@ -57,7 +56,8 @@ int DegRot = 0;
 uint16_t Xout[XYpreCalcSweep*DEGsteps];
 uint16_t Yout[XYpreCalcSweep*DEGsteps];
 uint8_t SPI_OUT[SPI_OUT_Cnt];
-unsigned char INTEN_OUT[2][SPI_INT_Cnt];
+unsigned char INTEN_OUT0[SPI_INT_Cnt];
+unsigned char INTEN_OUT1[SPI_INT_Cnt];
 
 struct spi_ioc_transfer XYmesg0[msgCnt];
 struct spi_ioc_transfer XYmesg1[msgCnt];
@@ -164,7 +164,7 @@ int F_DACscope() {
     INTENmesg[i].pad = 0; // 0;
     INTENmesg[i].speed_hz = 32000000;
     INTENmesg[i].len = 0;
-    INTENmesg[i].delay_usecs = 1; // 0
+    INTENmesg[i].delay_usecs = 0; // 0
     INTENmesg[i].cs_change = 0; // 0;
     INTENmesg[i].tx_buf = (unsigned long) nullptr;
   }
@@ -185,38 +185,56 @@ int F_DACscope() {
         /// Dispatch data to the DACs if data is ready.
         if(O_bulkSweepCalc[0].dataReady && O_bulkSweepCalc[1].dataReady){
             if(DegRot<360)DegRot++; else DegRot=0;
-            if(bufferSel)bufferSel=0; else bufferSel=1; ///Change write-to buffer.
+            if(InBufferSel)InBufferSel=0; else InBufferSel=1; ///Change write-to buffer.
             for(int i=0;i<DACscopeThreadCnt;i++){O_bulkSweepCalc[i].dataReady=0;}   ///Get the threads running again.
             DegRotOut=DegRot-1;
             if(DegRotOut==-1)DegRotOut=359;
             ///Output the data.
             for(int i=0;i<bulkTransFactor;i++){
                 ///If both buffers are full then loop here.
-                while(OutBufRdy[0]&&OutBufRdy[1]){}///Do nothing but loop.
+                while(OutBufRdy[0]&&OutBufRdy[1]){std::this_thread::sleep_for(std::chrono::microseconds(1));}///Do nothing but loop.
                 ///Fill one of the buffers.
                 ///If a buffer is ready, select the other one instead.
                 int iXY = 0;
                 if(!OutBufRdy[0]){
-                    bSel=0; ///Writing pointers for output Buffer 0
+                    OutBufSel=0; ///Writing pointers for output Buffer 0
                     int adrFact1 = (i*msgCnt)+(DegRotOut*DACresolution);
                     int adrFact2 = (i*msgCnt)>>1;
-                    for(int d=0;d<msgCnt;d+=2) {
-                        XYmesg0[d].tx_buf = (unsigned long)&INTEN_OUT[!bufferSel][(iXY&0xFE)+adrFact2];
-                        XYmesg0[d+1].tx_buf = (unsigned long)&SPI_OUT            [(iXY<<1)+adrFact1];
-                        iXY++;
+                    if(InBufferSel){
+                        for(int d=0;d<msgCnt;d+=2) {
+                            XYmesg0[d].tx_buf = (unsigned long)&INTEN_OUT1[(iXY&0xFE)+adrFact2];
+                            XYmesg0[d+1].tx_buf = (unsigned long)&SPI_OUT [(iXY<<1)+adrFact1];
+                            iXY++;
+                        }
+                    }
+                    else {
+                        for(int d=0;d<msgCnt;d+=2) {
+                            XYmesg0[d].tx_buf = (unsigned long)&INTEN_OUT0[(iXY&0xFE)+adrFact2];
+                            XYmesg0[d+1].tx_buf = (unsigned long)&SPI_OUT [(iXY<<1)+adrFact1];
+                            iXY++;
+                        }
                     }
                 }
                 else {
-                    bSel=1; ///Writing pointers to output buffer 1
+                    OutBufSel=1; ///Writing pointers to output buffer 1
                     int adrFact1 = (i*msgCnt)+(DegRotOut*DACresolution);
                     int adrFact2 = (i*msgCnt)>>1;
-                    for(int d=0;d<msgCnt;d+=2) {
-                        XYmesg1[d].tx_buf = (unsigned long)&INTEN_OUT[!bufferSel][(iXY&0xFE)+adrFact2];
-                        XYmesg1[d+1].tx_buf = (unsigned long)&SPI_OUT            [(iXY<<1)+adrFact1];
-                        iXY++;
+                    if(InBufferSel){
+                        for(int d=0;d<msgCnt;d+=2) {
+                            XYmesg1[d].tx_buf = (unsigned long)&INTEN_OUT1[(iXY&0xFE)+adrFact2];
+                            XYmesg1[d+1].tx_buf = (unsigned long)&SPI_OUT [(iXY<<1)+adrFact1];
+                            iXY++;
+                        }
+                    }
+                    else {
+                        for(int d=0;d<msgCnt;d+=2) {
+                            XYmesg1[d].tx_buf = (unsigned long)&INTEN_OUT0[(iXY&0xFE)+adrFact2];
+                            XYmesg1[d+1].tx_buf = (unsigned long)&SPI_OUT [(iXY<<1)+adrFact1];
+                            iXY++;
+                        }
                     }
                 }
-                OutBufRdy[bSel]=1;  ///Set selected output buffer as full/ready.
+                OutBufRdy[OutBufSel]=1;
                 if(!runDACscope)break;
             }
         }
@@ -225,6 +243,9 @@ int F_DACscope() {
   SPIoutThread.join();
   IntensityThread1.join();
   IntensityThread2.join();
+  ADSBpRun=0;
+  ADSBgRun=0;
+  runCLIscope=0;
   std::cout << "DAC Scope thread terminated. \n";
   return 0;
 }
@@ -242,7 +263,7 @@ int OutBufferSend(void){
             runDACscope = 0; //Kill the display if write failure.
             break;
         }
-        if(OutBufRdy[0] && bSel){
+        if(OutBufRdy[0] && OutBufSel){
             ///Transfer XY and Intensity data.
             ///Transfer to Buffer 1 and output Buffer 0.
             if (ioctl(XY_SPI, SPI_IOC_MESSAGE(msgCnt), &XYmesg0) < 0) {
@@ -252,7 +273,7 @@ int OutBufferSend(void){
             }
             OutBufRdy[0]=0;    ///Set this buffer as empty.
         }
-        else if(OutBufRdy[1] && !bSel){
+        else if(OutBufRdy[1] && !OutBufSel){
             ///Transfer to Buffer 0 and output Buffer 1.
             if (ioctl(XY_SPI, SPI_IOC_MESSAGE(msgCnt), &XYmesg1) < 0) {
                 std::cout << "**Sending data to /dev/spidev0.0 failed. errno: " << errno << " \n";
@@ -309,8 +330,14 @@ int C_bulkSweepCalc::ScopeCalc(void) {
                     Bright = blankInten; ///All the way dark.
                 }
                 uint16_t Intensity = ((Bright << 2) & 0x0FFF) | 0xF000; ///Update A&B with same data and latch.
-                INTEN_OUT[bufferSel][INTENindex    ] = (Intensity >> 8);
-                INTEN_OUT[bufferSel][INTENindex + 1] =  Intensity;
+                if(OutBufSel){
+                    INTEN_OUT0[INTENindex    ] = (Intensity >> 8);
+                    INTEN_OUT0[INTENindex + 1] =  Intensity;
+                }
+                else{
+                    INTEN_OUT1[INTENindex    ] = (Intensity >> 8);
+                    INTEN_OUT1[INTENindex + 1] =  Intensity;
+                }
                 INTENindex += 2;
             }
             O_bulkSweepCalc[myID].dataReady=1;

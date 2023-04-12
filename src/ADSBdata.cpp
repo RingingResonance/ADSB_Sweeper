@@ -227,6 +227,9 @@ void F_ADSBgetter() {
       }
     }
   }
+  ADSBpRun=0;
+  runCLIscope=0;
+  runDACscope=0;
   std::cout << "ADS-B Receiver thread terminated. \n";
 }
 
@@ -258,6 +261,9 @@ void F_ADSBpred() {
     }
     std::this_thread::sleep_for(std::chrono::microseconds(interpTime));
   }
+  ADSBgRun=0;
+  runCLIscope=0;
+  runDACscope=0;
   std::cout << "ADS-B Interpolation thread terminated. \n";
 }
 
