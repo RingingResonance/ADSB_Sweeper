@@ -34,6 +34,23 @@
 #include <linux/spi/spidev.h>
 #include <errno.h>
 
+///Screen Parameters
+int DEGsteps = 360;
+int DACresolution = 1024;
+int XYresDivider = 4;
+///Number of bulk messages to send.
+int msgCnt = 16;
+///Actual DAC resolution
+int XYresLowLim = 0;
+int XYresHighLim = 0;
+///Number of raw DAC updates per screen sweep.
+int XYpreCalcSweep = 0;
+///Bulk SPI system calls.
+int bulkTransFactor = 0;
+///Allocation for how many 8 bit bytes to use for XY output buffer.
+int SPI_OUT_Cnt = 0;
+///Allocation for how many 8 bit bytes to use for Intensity output buffer.
+int SPI_INT_Cnt = 0;
 
 
 bool runDACscope = 0;
@@ -54,13 +71,13 @@ int SPIdly = 2;
 bool calcFirstRun=0;
 int DegRot = 0;
 
-uint16_t Xout[XYpreCalcSweep*DEGsteps];
-uint16_t Yout[XYpreCalcSweep*DEGsteps];
-uint8_t SPI_OUT[SPI_OUT_Cnt];
-unsigned char INTEN_OUT[2][SPI_INT_Cnt];
+uint16_t* Xout;
+uint16_t* Yout;
+uint8_t* SPI_OUT;
+unsigned char* INTEN_OUT;
 
-struct spi_ioc_transfer XYmesg0[msgCnt];
-struct spi_ioc_transfer XYmesg1[msgCnt];
+struct spi_ioc_transfer* XYmesg0;
+struct spi_ioc_transfer* XYmesg1;
 struct spi_ioc_transfer INTENmesg[SyncCnt];
 
 float distFactRecip;
@@ -75,6 +92,27 @@ C_bulkSweepCalc* O_bulkSweepCalc;
 
 /** DAC Scope Loop **/
 int F_DACscope() {
+    ///Calculate screen parameters.
+    ///Actual DAC resolution
+    XYresLowLim = -1*(DACresolution/2);
+    XYresHighLim = DACresolution/2;
+    ///Number of raw DAC updates per screen sweep.
+    XYpreCalcSweep = DACresolution/XYresDivider;
+    ///Bulk SPI system calls.
+    bulkTransFactor = (XYpreCalcSweep/msgCnt)*4;
+    ///Allocation for how many 8 bit bytes to use for XY output buffer.
+    SPI_OUT_Cnt = DEGsteps*XYpreCalcSweep*4;
+    ///Allocation for how many 8 bit bytes to use for Intensity output buffer.
+    SPI_INT_Cnt = XYpreCalcSweep*2;
+
+    Xout = new uint16_t [XYpreCalcSweep*DEGsteps];
+    Yout = new uint16_t [XYpreCalcSweep*DEGsteps];
+    SPI_OUT = new uint8_t [SPI_OUT_Cnt];
+    INTEN_OUT = new unsigned char [SPI_INT_Cnt*2];
+
+    spi_ioc_transfer* XYmesg0 = new spi_ioc_transfer [msgCnt];
+    spi_ioc_transfer* XYmesg1 = new spi_ioc_transfer [msgCnt];
+/*************************************************************************/
     O_bulkSweepCalc = new C_bulkSweepCalc [DACscopeThreadCnt];
   if(!runDACscope) return 0;
   std::cout << "Starting DAC Scope Thread. \n";
@@ -134,6 +172,7 @@ int F_DACscope() {
   std::cout << "Generating initial SPI output tables. \n";
   ///Need to send 16 bits but the Raspi's hardware only supports 8 bits.
   for (int i = 0; i < msgCnt; i++) {
+    std::cout << "here \n";
     XYmesg0[i].rx_buf = (unsigned long) nullptr;
     XYmesg0[i].bits_per_word = 8; // 0;
     XYmesg0[i].tx_nbits = 0; // 0;
@@ -192,27 +231,27 @@ int F_DACscope() {
             ///Output the data.
             for(int i=0;i<bulkTransFactor;i++){
                 ///If both buffers are full then loop here.
-                while(OutBufRdy[0]&&OutBufRdy[1]){}///Do nothing but loop.
+                while(OutBufRdy[0]&&OutBufRdy[1]){std::this_thread::sleep_for(std::chrono::microseconds(1));}///Do nothing but loop.
                 ///Fill one of the buffers.
                 ///If a buffer is ready, select the other one instead.
                 int iXY = 0;
                 if(!OutBufRdy[0]){
                     bSel=0; ///Writing pointers for output Buffer 0
                     int adrFact1 = (i*msgCnt)+(DegRotOut*DACresolution);
-                    int adrFact2 = (i*msgCnt)>>1;
+                    int adrFact2 = ((i*msgCnt)>>1)+(!bufferSel*SPI_INT_Cnt);
                     for(int d=0;d<msgCnt;d+=2) {
-                        XYmesg0[d].tx_buf = (unsigned long)&INTEN_OUT[!bufferSel][(iXY&0xFE)+adrFact2];
-                        XYmesg0[d+1].tx_buf = (unsigned long)&SPI_OUT            [(iXY<<1)+adrFact1];
+                        XYmesg0[d].tx_buf = (unsigned long)&INTEN_OUT[(iXY&0xFE)+adrFact2];
+                        XYmesg0[d+1].tx_buf = (unsigned long)&SPI_OUT[(iXY<<1)+adrFact1];
                         iXY++;
                     }
                 }
                 else {
                     bSel=1; ///Writing pointers to output buffer 1
                     int adrFact1 = (i*msgCnt)+(DegRotOut*DACresolution);
-                    int adrFact2 = (i*msgCnt)>>1;
+                    int adrFact2 = ((i*msgCnt)>>1)+(!bufferSel*SPI_INT_Cnt);
                     for(int d=0;d<msgCnt;d+=2) {
-                        XYmesg1[d].tx_buf = (unsigned long)&INTEN_OUT[!bufferSel][(iXY&0xFE)+adrFact2];
-                        XYmesg1[d+1].tx_buf = (unsigned long)&SPI_OUT            [(iXY<<1)+adrFact1];
+                        XYmesg1[d].tx_buf = (unsigned long)&INTEN_OUT[(iXY&0xFE)+adrFact2];
+                        XYmesg1[d+1].tx_buf = (unsigned long)&SPI_OUT[(iXY<<1)+adrFact1];
                         iXY++;
                     }
                 }
@@ -235,7 +274,7 @@ int OutBufferSend(void){
     while(runDACscope){
         ///If neither are ready, loop until one is ready.
         if(!OutBufRdy[0]&&!OutBufRdy[1]&&calcFirstRun)std::cout << "!!->Can't keep up with requested SPI speed.<-!! \n";
-        while(!OutBufRdy[0]&&!OutBufRdy[1]){}   ///Do nothing but loop.
+        while(!OutBufRdy[0]&&!OutBufRdy[1]){std::this_thread::sleep_for(std::chrono::microseconds(1));}   ///Do nothing but loop.
         ///Send any data out /dev/spidev0.1 to sync the external CS logic.
         if (ioctl(INTEN_SPI, SPI_IOC_MESSAGE(SyncCnt), &INTENmesg) < 0) {
             std::cout << "**Sending data to /dev/spidev0.1 failed. errno: " << errno << " \n";
@@ -309,8 +348,8 @@ int C_bulkSweepCalc::ScopeCalc(void) {
                     Bright = blankInten; ///All the way dark.
                 }
                 uint16_t Intensity = ((Bright << 2) & 0x0FFF) | 0xF000; ///Update A&B with same data and latch.
-                INTEN_OUT[bufferSel][INTENindex    ] = (Intensity >> 8);
-                INTEN_OUT[bufferSel][INTENindex + 1] =  Intensity;
+                INTEN_OUT[INTENindex+(bufferSel*SPI_INT_Cnt)] = (Intensity >> 8);
+                INTEN_OUT[(INTENindex+1)+(bufferSel*SPI_INT_Cnt)] =  Intensity;
                 INTENindex += 2;
             }
             O_bulkSweepCalc[myID].dataReady=1;

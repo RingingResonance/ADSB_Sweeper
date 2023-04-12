@@ -23,31 +23,24 @@
 #define DACscopeThreadCnt 2
 
 ///Screen parameters
-#define DEGsteps 360
-#define DACresolution 1024
-#define XYresDivider 4
-
+extern int DEGsteps;
+extern int DACresolution;
+extern int XYresDivider;
 ///Actual DAC resolution
-#define XYresLowLim -1*(DACresolution/2)
-#define XYresHighLim DACresolution/2
-
+extern int XYresLowLim;
+extern int XYresHighLim;
 ///Number of bulk messages to send.
-#define msgCnt 16
-
+extern int msgCnt;
 ///Number of raw DAC updates per screen sweep.
-#define XYpreCalcSweep DACresolution/XYresDivider
-
+extern int XYpreCalcSweep;
 ///Bulk SPI system calls.
-#define bulkTransFactor (XYpreCalcSweep/msgCnt)*4
-
+extern int bulkTransFactor;
 ///Allocation for how many 8 bit bytes to use for XY output buffer.
-#define SPI_OUT_Cnt DEGsteps*XYpreCalcSweep*4
-
+extern int SPI_OUT_Cnt;
 ///Intensity data
 #define SyncCnt 1
-
 ///Allocation for how many 8 bit bytes to use for Intensity output buffer.
-#define SPI_INT_Cnt XYpreCalcSweep*2
+extern int SPI_INT_Cnt;
 
 void PreCalcSweep(void);
 int OutBufferSend(void);

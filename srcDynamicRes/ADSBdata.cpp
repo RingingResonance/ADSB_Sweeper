@@ -61,6 +61,7 @@ void F_ADSBgetter() {
   float ICAOlon;
   while (ADSBgRun&&(runDACscope||runCLIscope)) {
     for (int i = 0; i < 1000; i++) ADSB_MESSAGE[i] = 0;
+    std::this_thread::sleep_for(std::chrono::microseconds(10));
     std::cin.clear();
     std::cin >> & ADSB_MESSAGE[0];
     //Look for start of message.
@@ -73,7 +74,6 @@ void F_ADSBgetter() {
     if (addressFound == NotFound) {
       //cout << "Looking for address. \n";
       for (int i = 0; i < 50 && addressFound != Found; i++) {
-        std::this_thread::sleep_for(std::chrono::microseconds(1));///Wait a little. We don't need to run *that* fast.
         if (ADSB_MESSAGE[i] == ICAO_ADR[i]) {
           if (ADSB_MESSAGE[i] == ':') {
             std::cin >> & ICAOadr[0];
@@ -84,7 +84,6 @@ void F_ADSBgetter() {
       }
     } else if (addressFound == Found) {
       for (int i = 0; i < 50 && !latFound; i++) {
-        std::this_thread::sleep_for(std::chrono::microseconds(1));///Wait a little. We don't need to run *that* fast.
         if (ADSB_MESSAGE[i] == ICAO_LAT[i]) {
           if (ADSB_MESSAGE[i] == ':') {
             std::cin >> ICAOlat;
@@ -96,7 +95,6 @@ void F_ADSBgetter() {
         } else break;
       }
       for (int i = 0; i < 50 && !lonFound; i++) {
-        std::this_thread::sleep_for(std::chrono::microseconds(1));///Wait a little. We don't need to run *that* fast.
         if (ADSB_MESSAGE[i] == ICAO_LON[i]) {
           if (ADSB_MESSAGE[i] == ':') {
             std::cin >> ICAOlon;
@@ -109,7 +107,6 @@ void F_ADSBgetter() {
       }
       ICAOsquak = -1;
       for (int i = 0; i < 50; i++) {
-        std::this_thread::sleep_for(std::chrono::microseconds(1));///Wait a little. We don't need to run *that* fast.
         if (ADSB_MESSAGE[i] == ICAO_SQK[i]) {
           if (ADSB_MESSAGE[i] == ':') {
             std::cin >> ICAOsquak;
@@ -119,7 +116,6 @@ void F_ADSBgetter() {
       }
       ICAOheading = -1;
       for (int i = 0; i < 50; i++) {
-        std::this_thread::sleep_for(std::chrono::microseconds(1));///Wait a little. We don't need to run *that* fast.
         if (ADSB_MESSAGE[i] == ICAO_HDG[i]) {
           if (ADSB_MESSAGE[i] == ':') {
             std::cin >> ICAOheading;
@@ -129,7 +125,6 @@ void F_ADSBgetter() {
       }
       ICAOspeed = -1;
       for (int i = 0; i < 50; i++) {
-        std::this_thread::sleep_for(std::chrono::microseconds(1));///Wait a little. We don't need to run *that* fast.
         if (ADSB_MESSAGE[i] == ICAO_SPD[i]) {
           if (ADSB_MESSAGE[i] == ':') {
             std::cin >> ICAOspeed;
@@ -188,7 +183,6 @@ void F_ADSBgetter() {
             ABSfloat(O_ADSB_Database[i].CALC_Xdistance) > MaxRange) O_ADSB_Database[i].AircraftAsleepTimer = Sleeping;
           break;
         }
-        std::this_thread::sleep_for(std::chrono::microseconds(1));///Wait a little. We don't need to run *that* fast.
       }
       /** If name not found, search for a sleeping plane to replace or update **/
       if (nameFound == NotFound) {
@@ -222,7 +216,6 @@ void F_ADSBgetter() {
             else O_ADSB_Database[i].ADSB_SPD = -1;
             break;
           }
-          std::this_thread::sleep_for(std::chrono::microseconds(1));///Wait a little. We don't need to run *that* fast.
         }
       }
     }
