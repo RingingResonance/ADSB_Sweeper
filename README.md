@@ -43,7 +43,7 @@ dump1090-mutability | ./adsbSweeper -D -C -a 32.757541 -o -97.076364 -R 5 -m 5
 
 -o :: Manual Longitude setting.
 
--S :: Aircraft 'Sleep' Time in half seconds. How long an aircraft stays in database before being deleted. Default: <20> 10 seconds.
+-S :: Aircraft 'Sleep' Time in seconds. How long an aircraft stays in database before being deleted. Default: 10 seconds.
       
 -M :: Max number of Aircraft before new ones are rejected. Default: 26
 
@@ -55,3 +55,6 @@ dump1090-mutability | ./adsbSweeper -D -C -a 32.757541 -o -97.076364 -R 5 -m 5
 
 -c :: Blanking Value. Default = 1023
 
+-f :: SPI Output Frequency. Default = 5000000
+
+-w :: SPI Output Delay in uS. Default = 2
