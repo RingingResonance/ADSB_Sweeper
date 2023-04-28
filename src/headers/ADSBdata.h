@@ -31,10 +31,16 @@
 #define Sleeping 0
 #define Awake 1
 
+#define typeLat 0x01
+#define typeLon 0x02
+#define typeSqk 0x04
+#define typeHdg 0x08
+#define typeSpd 0x16
+
 extern double  homeLon;
 extern double  homeLat;
 
-extern int MaxAvrgCnt;
+extern int      MaxAvrgCnt;
 extern double  avrgLon;
 extern double  avrgLat;
 extern int     LocAvrgCnt;
@@ -42,12 +48,12 @@ extern int     LocAvrgCnt;
 extern float MaxRange;
 
 /** Strings of text to look for from dump1090 **/
-static char ICAO_ADR[] = {"Address:  "};
-static char ICAO_LAT[] = {"latitude:  "};
-static char ICAO_LON[] = {"longitude:  "};
-static char ICAO_SQK[] = ("Squawk:  ");
-static char ICAO_HDG[] = ("Heading:  ");
-static char ICAO_SPD[] = ("Speed:  ");
+static char ICAO_ADR[] = {"Address:"};
+static char ICAO_LAT[] = {"latitude:"};
+static char ICAO_LON[] = {"longitude:"};
+static char ICAO_SQK[] = ("Squawk:");
+static char ICAO_HDG[] = ("Heading:");
+static char ICAO_SPD[] = ("Speed:");
 extern int  sweeptimer;
 
 extern bool addressFound;

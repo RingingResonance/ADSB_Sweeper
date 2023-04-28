@@ -71,7 +71,7 @@ int GetArgs(int argc, char **argv){
             case 'C':       ///CLI scope enable.
                 runCLIscope = 1;
                 break;
-            case 'm':
+            case 'm':       ///Max aircraft range.
                 if(argNumber>0&&argNumber<=10000)MaxRange=argNumber;
                 else {std::cout << "\nArgument Value Out Of Range For Max Range: " << &argv[i][0] << ", limit 0 - 10000\n"; return 1;}
                 break;
@@ -88,6 +88,10 @@ int GetArgs(int argc, char **argv){
                     MaxAvrgCnt=-1;      ///Disable auto location.
                 }
                 else {std::cout << "\nArgument Value Out Of Range For Longitude: " << &argv[i][0] << ", limit -180 - 180\n"; return 1;}
+                break;
+            case 'v':       ///Aircraft Average Count.
+                if(argNumber>=0&&argNumber<=256000)MaxAvrgCnt=argNumber;
+                else {std::cout << "\nArgument Value Out Of Range For Average Count: " << &argv[i][0] << ", limit 0 - 256000\n"; return 1;}
                 break;
             case 'S':       ///Aircraft Sleep Timer.
                 if(argNumber>=0&&argNumber<=256000)SleepTimer=argNumber;
