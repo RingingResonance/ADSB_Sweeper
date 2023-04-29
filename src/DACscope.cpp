@@ -201,6 +201,7 @@ int F_DACscope() {
                     int adrFact1 = (i*msgCnt)+(DegRotOut*DACresolution);
                     int adrFact2 = (i*msgCnt)>>1;
                     if(InBufferSel){
+                        ///Write from calculated data buffer 1
                         for(int d=0;d<msgCnt;d+=2) {
                             XYmesg0[d].tx_buf = (unsigned long)&INTEN_OUT1[(iXY&0xFE)+adrFact2];
                             XYmesg0[d+1].tx_buf = (unsigned long)&SPI_OUT [(iXY<<1)+adrFact1];
@@ -208,6 +209,7 @@ int F_DACscope() {
                         }
                     }
                     else {
+                        ///Write from calculated data buffer 0
                         for(int d=0;d<msgCnt;d+=2) {
                             XYmesg0[d].tx_buf = (unsigned long)&INTEN_OUT0[(iXY&0xFE)+adrFact2];
                             XYmesg0[d+1].tx_buf = (unsigned long)&SPI_OUT [(iXY<<1)+adrFact1];
@@ -220,6 +222,7 @@ int F_DACscope() {
                     int adrFact1 = (i*msgCnt)+(DegRotOut*DACresolution);
                     int adrFact2 = (i*msgCnt)>>1;
                     if(InBufferSel){
+                        ///Write from calculated data buffer 1
                         for(int d=0;d<msgCnt;d+=2) {
                             XYmesg1[d].tx_buf = (unsigned long)&INTEN_OUT1[(iXY&0xFE)+adrFact2];
                             XYmesg1[d+1].tx_buf = (unsigned long)&SPI_OUT [(iXY<<1)+adrFact1];
@@ -227,6 +230,7 @@ int F_DACscope() {
                         }
                     }
                     else {
+                        ///Write from calculated data buffer 0
                         for(int d=0;d<msgCnt;d+=2) {
                             XYmesg1[d].tx_buf = (unsigned long)&INTEN_OUT0[(iXY&0xFE)+adrFact2];
                             XYmesg1[d+1].tx_buf = (unsigned long)&SPI_OUT [(iXY<<1)+adrFact1];
@@ -330,7 +334,7 @@ int C_bulkSweepCalc::ScopeCalc(void) {
                     Bright = blankInten; ///All the way dark.
                 }
                 uint16_t Intensity = ((Bright << 2) & 0x0FFF) | 0xF000; ///Update A&B with same data and latch.
-                if(OutBufSel){
+                if(!InBufferSel){
                     INTEN_OUT0[INTENindex    ] = (Intensity >> 8);
                     INTEN_OUT0[INTENindex + 1] =  Intensity;
                 }
