@@ -47,7 +47,6 @@ int main(int argc, char * argv[]) {
   std::thread ADSBpredThread(F_ADSBpred);       ///ADS-B interpolation thread.
   std::thread ADSBgetterThread(F_ADSBgetter);   ///ADS-B input thread.
 /****************************************************/
-  while (runDACscope||runCLIscope){std::this_thread::sleep_for(std::chrono::microseconds(10));}///Try to sleep for most of the time.
   DACscopeThread.join();
   CLIscopeThread.join();
   ADSBgetterThread.join();
@@ -71,13 +70,7 @@ int GetArgs(int argc, char **argv){
             case 'C':       ///CLI scope enable.
                 runCLIscope = 1;
                 break;
-<<<<<<< HEAD
-            case 'I':       ///CLI scope reduced info.
-                CfullScope = 0;
-                break;
-=======
->>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
-            case 'm':       ///Max aircraft range.
+            case 'm':
                 if(argNumber>0&&argNumber<=10000)MaxRange=argNumber;
                 else {std::cout << "\nArgument Value Out Of Range For Max Range: " << &argv[i][0] << ", limit 0 - 10000\n"; return 1;}
                 break;
@@ -94,10 +87,6 @@ int GetArgs(int argc, char **argv){
                     MaxAvrgCnt=-1;      ///Disable auto location.
                 }
                 else {std::cout << "\nArgument Value Out Of Range For Longitude: " << &argv[i][0] << ", limit -180 - 180\n"; return 1;}
-                break;
-            case 'v':       ///Aircraft Average Count.
-                if(argNumber>=0&&argNumber<=256000)MaxAvrgCnt=argNumber;
-                else {std::cout << "\nArgument Value Out Of Range For Average Count: " << &argv[i][0] << ", limit 0 - 256000\n"; return 1;}
                 break;
             case 'S':       ///Aircraft Sleep Timer.
                 if(argNumber>=0&&argNumber<=256000)SleepTimer=argNumber;
@@ -134,14 +123,6 @@ int GetArgs(int argc, char **argv){
             case 'c':       ///Blanking Brightness.
                 if(argNumber>=0&&argNumber<=1023)blankInten=argNumber;
                 else {std::cout << "\nArgument Value Out Of Range For Blanking: " << &argv[i][0] << ", limit 0 - 1023\n"; return 1;}
-                break;
-            case 'f':       ///SPI frequency
-                if(argNumber>=0&&argNumber<=32000000)SPIfreq=argNumber;
-                else {std::cout << "\nArgument Value Out Of Range For Blanking: " << &argv[i][0] << ", limit 0 - 32000000\n"; return 1;}
-                break;
-            case 'w':       ///SPI delay in uSec
-                if(argNumber>=0&&argNumber<=999)SPIdly=argNumber;
-                else {std::cout << "\nArgument Value Out Of Range For Blanking: " << &argv[i][0] << ", limit 0 - 999\n"; return 1;}
                 break;
             case 'h':       ///Help Text.
                 std::cout << helpText[0]; return 1;

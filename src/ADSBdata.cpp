@@ -62,10 +62,13 @@ void F_ADSBgetter() {
   float ICAOlat = 0;
   float ICAOlon = 0;
   while (ADSBgRun&&(runDACscope||runCLIscope)) {
+<<<<<<< HEAD
+=======
     //for (int i = 0; i < 1000; i++) {
         //ADSB_MESSAGE[i] = 0;
         //std::this_thread::sleep_for(std::chrono::microseconds(1));///Wait a little. We don't need to run *that* fast.
     //}
+>>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
     std::cin.clear();
     std::cin >> &ADSB_MESSAGE[0];
     //Look for start of message.
@@ -84,7 +87,11 @@ void F_ADSBgetter() {
             break;
           }
         }
+<<<<<<< HEAD
+        ///std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+=======
         std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+>>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
       }
     }
     ///If further into the message and we have already found the address...
@@ -146,7 +153,11 @@ void F_ADSBgetter() {
             }
             ICAO_index++;
         }
+<<<<<<< HEAD
+        ///std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+=======
         std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+>>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
       }
       /** Now put the found information into the database somewhere. **/
       bool nameFound = 0;
@@ -164,7 +175,11 @@ void F_ADSBgetter() {
                 AircraftNum = i;
                 break;
             }
+<<<<<<< HEAD
+            ///std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+=======
             std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+>>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
         }
       }
       ///If name not in database then find a sleeping plane to replace.
@@ -173,13 +188,21 @@ void F_ADSBgetter() {
                 AircraftNum = i;
                 break;
           }
+<<<<<<< HEAD
+          ///std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+=======
           std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+>>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
       }
         /** If name is the same then we update it's information. **/
         if (AircraftNum != -1) {
           ///Update address if name wasn't found.
           for (int n = 0; n<20 && !nameFound; n++) {
+<<<<<<< HEAD
+              ///std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+=======
               std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+>>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
               O_ADSB_Database[AircraftNum].ADSB_Address[n] = ICAOadr[n]; //Update the address/name.
           }
           ///Check if we got lat/lon data.
@@ -241,9 +264,16 @@ void F_ADSBpred() {
           O_ADSB_Database[i].CALC_timer = interpCycles;
           O_ADSB_Database[i].CALC_Xdistance += std::sin(DegToRad(O_ADSB_Database[i].ADSB_HDG)) * (O_ADSB_Database[i].ADSB_SPD / interpFactor);
           O_ADSB_Database[i].CALC_Ydistance += std::cos(DegToRad(O_ADSB_Database[i].ADSB_HDG)) * (O_ADSB_Database[i].ADSB_SPD / interpFactor);
+<<<<<<< HEAD
+          ///If out of range then remove from list via setting SleepTimer to Asleep, unless we are still gathering averages.
+          if ((ABSfloat(O_ADSB_Database[i].CALC_Ydistance) > MaxRange ||
+               ABSfloat(O_ADSB_Database[i].CALC_Xdistance) > MaxRange) &&
+               LocAvrgCnt>MaxAvrgCnt) O_ADSB_Database[i].AircraftAsleepTimer = Sleeping;
+=======
           //If out of range then remove from list via setting SleepTimer to Asleep;
           if (ABSfloat(O_ADSB_Database[i].CALC_Ydistance) > MaxRange ||
             ABSfloat(O_ADSB_Database[i].CALC_Xdistance) > MaxRange) O_ADSB_Database[i].AircraftAsleepTimer = Sleeping;
+>>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
 
         }
         else O_ADSB_Database[i].CALC_timer--;
@@ -254,7 +284,11 @@ void F_ADSBpred() {
         }
         else O_ADSB_Database[i].sleepMult++;
       }
+<<<<<<< HEAD
+      ///std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
+=======
       std::this_thread::sleep_for(std::chrono::microseconds(1));///Wait a little. We don't need to run *that* fast.
+>>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
     }
     std::this_thread::sleep_for(std::chrono::microseconds(interpTime));
   }

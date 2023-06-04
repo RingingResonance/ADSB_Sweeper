@@ -16,17 +16,22 @@
 
 **/
 
-#ifndef CLIscope_H
-#define CLIscope_H
+#ifndef DACscope_H
+#define DACscope_H
 
-#define zoomFactorX 10
-#define zoomFactorY 5
 
-static char DSP_ID[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ%"};
-extern int CLIrScope(void);
-<<<<<<< HEAD:src/headers/CLIscope.h
-extern bool CfullScope;
-=======
->>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5:adsbSweeper.cpp.save-failed
+///Default max msgCnt size seems to be 128
+#define msgCnt 8        ///8 seems to work with 1024 resolution. Nothing else works and I'm not sure why.
+#define intCnt 4
+#define SPI_OUT_Cnt 32
+#define SPI_INT_Cnt 16
+extern int F_DACscope(void);
+extern bool runDACscope;
+extern float distFactor;
+extern float blipScale;
+extern int blankInten;
+extern int dimInten;
+extern int scaleInten;
+extern int blipInten;
 
 #endif // PICTOVECTWAVE_H

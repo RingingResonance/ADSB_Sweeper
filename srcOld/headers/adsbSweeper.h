@@ -30,24 +30,18 @@ const char *helpText[]{
 "-h :: This Help Text.\n"
 "-D :: Enable DAC based RADAR scope output.\n"
 "-C :: Enable CLI based RADAR scope output.\n"
-<<<<<<< HEAD
-"-I :: Reduce CLI scope's info to just aircraft data.\n"
-=======
->>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
 "-m :: Max range of aircraft in nm before being deleted from database. Default: 4nm\n"
 "-R :: Scope Radius. Trace Length in nm. Default: 4nm\n"
 "-B :: Blip-Size Scale-Factor. Default: 1\n"
 "-a :: Manual Latitude setting.\n"
 "-o :: Manual Longitude setting.\n"
-"-S :: Aircraft 'Sleep' Time in seconds. How long an aircraft stays\n"
-"      in database before being deleted. Default: 10 seconds. \n"
+"-S :: Aircraft 'Sleep' Time in half seconds. How long an aircraft stays\n"
+"      in database before being deleted. Default: <20> 10 seconds. \n"
 "-M :: Max number of Aircraft before new ones are rejected. Default: 26\n"
 "-b :: Blip Brightness Value. Default = 0\n"
 "-d :: Trace Brightness Value. Default = 512\n"
 "-s :: Scale Brightness Value. Default = 470\n"
 "-c :: Blanking Value. Default = 1023\n"
-"-f :: SPI Output Frequency. Default = 5000000\n"
-"-w :: SPI Output Delay in uS. Default = 2\n"
 "\n"
 };
 
