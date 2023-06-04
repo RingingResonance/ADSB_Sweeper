@@ -24,9 +24,6 @@
 
 static char DSP_ID[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ%"};
 extern int CLIrScope(void);
-<<<<<<< HEAD:src/headers/CLIscope.h
 extern bool CfullScope;
-=======
->>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5:adsbSweeper.cpp.save-failed
 
 #endif // PICTOVECTWAVE_H

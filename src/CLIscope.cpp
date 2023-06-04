@@ -31,16 +31,12 @@
 #include <fcntl.h>
 
 bool runCLIscope = 0;
-<<<<<<< HEAD
 bool CfullScope = 1;
-=======
->>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
 
 int CLIrScope(void){
     if(!runCLIscope)return 0;
     while(runCLIscope){
     std::cout << "\x1B[2J\x1B[H";
-<<<<<<< HEAD
     if(CfullScope){
         char airplane[3001];
         char border[100];
@@ -79,44 +75,6 @@ int CLIrScope(void){
         std::cout << airplane << "\n";
         std::cout << border << "\n";
     }
-=======
-    char airplane[3001];
-    char border[100];
-    for (int i = 0; i < 100; i++) border[i] = '#';
-    border[99] = 0;
-    for (int i = 0; i < 3000; i++) airplane[i] = ' ';
-    for (int i = 0; i < MaxAircraft; i++) {
-      if (O_ADSB_Database[i].AircraftAsleepTimer) {
-        float tempX = (O_ADSB_Database[i].CALC_Xdistance * zoomFactorX) + 50;
-        float tempY = (O_ADSB_Database[i].CALC_Ydistance * -zoomFactorY) + 15;
-        int adrX = tempX;
-        int adrY = tempY;
-        if (adrX < 0) adrX = 0;
-        if (adrX > 98) adrX = 98;
-        if (adrY < 0) adrY = 0;
-        if (adrY > 28) adrY = 28;
-        if (O_ADSB_Database[i].ADSB_HDG >= 0) {
-          if (O_ADSB_Database[i].ADSB_HDG >= 337 || O_ADSB_Database[i].ADSB_HDG < 22) airplane[((adrY - 1) * 100) + adrX] = '|';
-          if (O_ADSB_Database[i].ADSB_HDG >= 22 && O_ADSB_Database[i].ADSB_HDG < 67) airplane[((adrY - 1) * 100) + (adrX + 1)] = '/';
-          if (O_ADSB_Database[i].ADSB_HDG >= 67 && O_ADSB_Database[i].ADSB_HDG < 112) airplane[(adrY * 100) + (adrX + 1)] = '-';
-          if (O_ADSB_Database[i].ADSB_HDG >= 112 && O_ADSB_Database[i].ADSB_HDG < 157) airplane[((adrY + 1) * 100) + (adrX + 1)] = '\\';
-          if (O_ADSB_Database[i].ADSB_HDG >= 157 && O_ADSB_Database[i].ADSB_HDG < 202) airplane[((adrY + 1) * 100) + adrX] = '|';
-          if (O_ADSB_Database[i].ADSB_HDG >= 202 && O_ADSB_Database[i].ADSB_HDG < 247) airplane[((adrY + 1) * 100) + (adrX - 1)] = '/';
-          if (O_ADSB_Database[i].ADSB_HDG >= 247 && O_ADSB_Database[i].ADSB_HDG < 292) airplane[(adrY * 100) + (adrX - 1)] = '-';
-          if (O_ADSB_Database[i].ADSB_HDG >= 292 && O_ADSB_Database[i].ADSB_HDG < 337) airplane[((adrY - 1) * 100) + (adrX - 1)] = '\\';
-        }
-        airplane[(adrY * 100) + adrX] = DSP_ID[i];
-      }
-    }
-    for (int y = 0; y < 30; y++) {
-      airplane[(y * 100) + 98] = '#';
-      airplane[(y * 100) + 99] = '\n';
-    }
-    airplane[(15 * 100) + 50] = '@'; //Mark Center
-    airplane[3000] = 0;
-    std::cout << airplane << "\n";
-    std::cout << border << "\n";
->>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
     std::cout << "Aircraft Loc Averaged: " << LocAvrgCnt << " Center Longitude: " << homeLon << " Center Latitude: " << homeLat << "\n";
     ///Print aircraft list
     int ni = 0;

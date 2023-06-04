@@ -71,12 +71,9 @@ int GetArgs(int argc, char **argv){
             case 'C':       ///CLI scope enable.
                 runCLIscope = 1;
                 break;
-<<<<<<< HEAD
             case 'I':       ///CLI scope reduced info.
                 CfullScope = 0;
                 break;
-=======
->>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
             case 'm':       ///Max aircraft range.
                 if(argNumber>0&&argNumber<=10000)MaxRange=argNumber;
                 else {std::cout << "\nArgument Value Out Of Range For Max Range: " << &argv[i][0] << ", limit 0 - 10000\n"; return 1;}
