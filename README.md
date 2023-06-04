@@ -36,6 +36,8 @@ dump1090-mutability | ./adsbSweeper -D -C -a 32.757541 -o -97.076364 -R 5 -m 5
 
 -C :: Enable CLI based RADAR scope output.
 
+-I :: Reduce CLI scope's info to just aircraft data.
+
 -m :: Max range of aircraft in nm before being deleted from database. Default: 4nm
 
 -R :: Scope Radius. Trace Length in nm. Default: 4nm
