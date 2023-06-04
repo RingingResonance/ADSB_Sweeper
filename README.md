@@ -10,12 +10,10 @@ A program to generate the proper analog signals to send to a real RADAR scope tu
 
 Uses the SPI output to send data to two LTC1662 DACs to generate real-time sweep and intensity data for showing ADS-B traffic on an XY scope, or oscilloscope in XY mode. The XY DAC is conntected to CE0, and the intensity DAC is connected to CE1 with both of it's outputs copied so it doesn't matter which one you connect.
 
-<<<<<<< HEAD
 =======
 I've updated the program to alternate between DAC chips on CE0. There is more control of intensity data this way, but requires an external circuit to
 switch between the two chips using a flip-flop. I'm using a 74s74 dual flip-flop and a 74ls32 quad OR gate for this. I've included a schematic.
 
->>>>>>> 1ee447ab20aa34b8c6bd9134939402b651b93fb5
 The current version of this software is slow, and pushes Linux and the Raspi to it's limits in terms of speed. I plan on further optimizations later on, but as it is right now the sweep speed is what you get.
 
 This program requires dump1090 or equivilant data to be piped into it to function. You must also enable the SPI interface on the Raspi. I'm using a Raspi 3b. I have no idea what kind of performance you will get on other devices.
