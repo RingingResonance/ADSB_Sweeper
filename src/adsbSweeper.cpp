@@ -143,6 +143,10 @@ int GetArgs(int argc, char **argv){
             case 'h':       ///Help Text.
                 std::cout << helpText[0]; return 1;
                 break;
+            case 'r':       ///CLI scope refresh in ms.
+                if(argNumber>=0&&argNumber<=10000)refTime=argNumber;
+                else {std::cout << "\nArgument Value Out Of Range For CLI refresh: " << &argv[i][0] << ", limit 0 - 10000\n"; return 1;}
+                break;
         }
     }
   }

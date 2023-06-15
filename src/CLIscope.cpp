@@ -32,6 +32,7 @@
 
 bool runCLIscope = 0;
 bool CfullScope = 1;
+int refTime = 500;
 
 int CLIrScope(void){
     if(!runCLIscope)return 0;
@@ -88,7 +89,16 @@ int CLIrScope(void){
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    int rsTim;
+    if(refTime>999){
+        float rtim = refTime;
+        rtim /= 1000;
+        rsTim = rtim;
+        std::this_thread::sleep_for(std::chrono::seconds(rsTim));
+        rsTim*=1000;
+    }
+    else rsTim = 0;
+    std::this_thread::sleep_for(std::chrono::milliseconds(refTime-rsTim));
     }
     ///Kill all other threads if we crash.
     ADSBpRun=0;

@@ -30,6 +30,7 @@ const char *helpText[]{
 "-h :: This Help Text.\n"
 "-D :: Enable DAC based RADAR scope output.\n"
 "-C :: Enable CLI based RADAR scope output.\n"
+"-r :: CLI refresh rate in ms. Default: 500\n"
 "-I :: Reduce CLI scope's info to just aircraft data.\n"
 "-m :: Max range of aircraft in nm before being deleted from database. Default: 4nm\n"
 "-R :: Scope Radius. Trace Length in nm. Default: 4nm\n"

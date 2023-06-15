@@ -49,9 +49,8 @@ int MaxAvrgCnt = 10;
 int SleepTimer = 10;
 int MaxAircraft = 26;
 
-/** Please notice the delays implemented in various portions of this program. They are for slowing down the program so
-    as to not use all resources at once in order to keep from disturbing DACscope's threads. **/
 /** ADS-B loop **/
+/// Searches through stdin line-by-line as the data comes in.
 void F_ADSBgetter() {
   std::cout << "Starting ADS-B Receiver Thread. \n";
   char ADSB_MESSAGE[1000];
@@ -62,15 +61,15 @@ void F_ADSBgetter() {
   float ICAOlat = 0;
   float ICAOlon = 0;
   while (ADSBgRun&&(runDACscope||runCLIscope)) {
-    std::cin.clear();
-    std::cin >> &ADSB_MESSAGE[0];
-    //Look for start of message.
+    std::cin.clear();               ///Clear buffer.
+    std::cin >> &ADSB_MESSAGE[0];   ///Get new line of text to process.
+    ///Look for start of message.
     if (ADSB_MESSAGE[0] == '*') {
       addressFound = NotFound;
       latFound = NotFound;
       lonFound = NotFound;
     }
-    ///Look for ICAO address or latitude/longitude
+    ///Look for ICAO address.
     if (addressFound == NotFound) {
       for (int i = 0; i < 50 && addressFound != Found; i++) {
         if (ADSB_MESSAGE[i] == ICAO_ADR[i]) {
@@ -80,7 +79,6 @@ void F_ADSBgetter() {
             break;
           }
         }
-        ///std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
       }
     }
     ///If further into the message and we have already found the address...
@@ -142,7 +140,6 @@ void F_ADSBgetter() {
             }
             ICAO_index++;
         }
-        ///std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
       }
       /** Now put the found information into the database somewhere. **/
       bool nameFound = 0;
@@ -160,7 +157,6 @@ void F_ADSBgetter() {
                 AircraftNum = i;
                 break;
             }
-            ///std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
         }
       }
       ///If name not in database then find a sleeping plane to replace.
@@ -169,7 +165,6 @@ void F_ADSBgetter() {
                 AircraftNum = i;
                 break;
           }
-          ///std::this_thread::sleep_for(std::chrono::microseconds(2));///Wait a little. We don't need to run *that* fast.
       }
         /** If name is the same then we update it's information. **/
         if (AircraftNum != -1) {

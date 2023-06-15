@@ -25,5 +25,6 @@
 static char DSP_ID[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ%"};
 extern int CLIrScope(void);
 extern bool CfullScope;
+extern int refTime;
 
 #endif // PICTOVECTWAVE_H
