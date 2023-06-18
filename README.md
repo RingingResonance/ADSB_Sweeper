@@ -32,6 +32,10 @@ dump1090-mutability | ./adsbSweeper -D -C -a 32.757541 -o -97.076364 -R 5 -m 5
 
 -C :: Enable CLI based RADAR scope output.
 
+-r :: CLI refresh rate in ms. Default: 500
+
+-I :: Reduce CLI scope's info to just aircraft data.
+
 -m :: Max range of aircraft in nm before being deleted from database. Default: 4nm
 
 -R :: Scope Radius. Trace Length in nm. Default: 4nm
@@ -45,4 +49,16 @@ dump1090-mutability | ./adsbSweeper -D -C -a 32.757541 -o -97.076364 -R 5 -m 5
 -S :: Aircraft 'Sleep' Time in half seconds. How long an aircraft stays in database before being deleted. Default: <20> 10 seconds.
       
 -M :: Max number of Aircraft before new ones are rejected. Default: 26
+
+-b :: Blip Brightness Value. Default = 0
+
+-d :: Trace Brightness Value. Default = 512
+
+-s :: Scale Brightness Value. Default = 470
+
+-c :: Blanking Value. Default = 1023
+
+-f :: SPI Output Frequency. Default = 5000000
+
+-w :: SPI Output Delay in uS. Default = 2
 
