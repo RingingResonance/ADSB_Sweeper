@@ -68,6 +68,9 @@ int GetArgs(int argc, char **argv){
             case 'D':       ///DAC scope enable.
                 runDACscope = 1;
                 break;
+            case 't':       ///DAC scope; use half trace length.
+                fullTrace = 0;
+                break;
             case 'C':       ///CLI scope enable.
                 runCLIscope = 1;
                 break;

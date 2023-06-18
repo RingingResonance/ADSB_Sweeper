@@ -37,6 +37,7 @@ int refTime = 500;
 int CLIrScope(void){
     if(!runCLIscope)return 0;
     while(runCLIscope){
+    std::cout.clear();               ///Clear buffer.
     std::cout << "\x1B[2J\x1B[H";
     if(CfullScope){
         char airplane[3001];

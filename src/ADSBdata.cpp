@@ -38,6 +38,7 @@ double  homeLat = 0;
 double  avrgLon = 0;
 double  avrgLat = 0;
 int     LocAvrgCnt = 0;
+bool    LocAvrgGet = 0;
 int  sweeptimer = 0;
 bool addressFound = NotFound;
 bool ADSBgRun = 1;
@@ -182,10 +183,10 @@ void F_ADSBgetter() {
                 avrgLat += ICAOlat;
                 LocAvrgCnt++;
             }
-            else if(LocAvrgCnt==MaxAvrgCnt){
+            else if(LocAvrgCnt==MaxAvrgCnt && !LocAvrgGet){
                 homeLon = avrgLon/MaxAvrgCnt;
                 homeLat = avrgLat/MaxAvrgCnt;
-                LocAvrgCnt=MaxAvrgCnt+1;
+                LocAvrgGet = 1;
             }
             ///Update Lat&Long
             O_ADSB_Database[AircraftNum].CALC_Ydistance = O_ADSB_Database[AircraftNum].ADSB_Ydistance = (ICAOlat - homeLat) * 59.71922; //convert to nautical
@@ -210,7 +211,7 @@ void F_ADSBgetter() {
           ///If out of range then remove from list via setting SleepTimer to 'Sleeping' unless we are still gathering averages to get our working location.
           if ((ABSfloat(O_ADSB_Database[AircraftNum].CALC_Ydistance) > MaxRange ||
                ABSfloat(O_ADSB_Database[AircraftNum].CALC_Xdistance) > MaxRange) &&
-               LocAvrgCnt>MaxAvrgCnt) O_ADSB_Database[AircraftNum].AircraftAsleepTimer = Sleeping;
+               LocAvrgCnt>=MaxAvrgCnt) O_ADSB_Database[AircraftNum].AircraftAsleepTimer = Sleeping;
         }
     }
   }
@@ -235,7 +236,7 @@ void F_ADSBpred() {
           ///If out of range then remove from list via setting SleepTimer to Asleep, unless we are still gathering averages.
           if ((ABSfloat(O_ADSB_Database[i].CALC_Ydistance) > MaxRange ||
                ABSfloat(O_ADSB_Database[i].CALC_Xdistance) > MaxRange) &&
-               LocAvrgCnt>MaxAvrgCnt) O_ADSB_Database[i].AircraftAsleepTimer = Sleeping;
+               LocAvrgCnt>=MaxAvrgCnt) O_ADSB_Database[i].AircraftAsleepTimer = Sleeping;
 
         }
         else O_ADSB_Database[i].CALC_timer--;

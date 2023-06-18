@@ -29,6 +29,7 @@ const char *helpText[]{
 "\n"
 "-h :: This Help Text.\n"
 "-D :: Enable DAC based RADAR scope output.\n"
+"-t :: Use half trace length instead of sweeping full length. \n"
 "-C :: Enable CLI based RADAR scope output.\n"
 "-r :: CLI refresh rate in ms. Default: 500\n"
 "-I :: Reduce CLI scope's info to just aircraft data.\n"

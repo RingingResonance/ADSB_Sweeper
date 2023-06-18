@@ -53,6 +53,7 @@ int SPIfreq = 5000000;
 int SPIdly = 2;
 bool calcFirstRun=0;
 int DegRot = 0;
+bool fullTrace = 1;
 
 uint16_t Xout[XYpreCalcSweep*DEGsteps];
 uint16_t Yout[XYpreCalcSweep*DEGsteps];
@@ -156,7 +157,7 @@ int F_DACscope() {
     XYmesg1[i].delay_usecs = SPIdly; // 0
     XYmesg1[i].cs_change = 1; /// Bring CS high between messages. Right? Is this how this god-forsaken driver works? IDK. So much conflicting info on the net...
   }
-  ///Do sync pulse. Using CE1 for this.
+  ///Do sync pulse using CE1 for this.
   for (int i = 0; i < SyncCnt; i++) {
     INTENmesg[i].rx_buf = (unsigned long) nullptr;
     INTENmesg[i].bits_per_word = 8; // 0;
@@ -262,7 +263,7 @@ int OutBufferSend(void){
     while(runDACscope){
         ///If neither are ready, loop until one is ready.
         if(!OutBufRdy[0]&&!OutBufRdy[1]&&calcFirstRun)std::cout << "!!->Can't keep up with requested SPI speed.<-!! \n";
-        while(!OutBufRdy[0]&&!OutBufRdy[1]){}   ///Do nothing but loop.
+        while(!OutBufRdy[0]&&!OutBufRdy[1]){std::this_thread::sleep_for(std::chrono::microseconds(1));}   ///Do nothing but loop.
         ///Send any data out /dev/spidev0.1 to sync the external CS logic.
         if (ioctl(INTEN_SPI, SPI_IOC_MESSAGE(SyncCnt), &INTENmesg) < 0) {
             std::cout << "**Sending data to /dev/spidev0.1 failed. errno: " << errno << " \n";
@@ -313,10 +314,10 @@ int C_bulkSweepCalc::ScopeCalc(void) {
                 if (radarTrace>2) {
                     ///Draw Scale.
                     if ((radarTrace&~0x003F)==radarTrace){
-                        Bright = scaleInten; ///Give a little more/less brightness.
+                        Bright = scaleInten; ///Give a little more/less brightness for scale.
                     }
                     else {
-                        Bright = dimInten; ///Give some brightness.
+                        Bright = dimInten; ///Give some brightness for solid trace.
                     }
                     ///Check for aircraft.
                     float XaComp = Xout[pcIndex+(DegRot*XYpreCalcSweep)];

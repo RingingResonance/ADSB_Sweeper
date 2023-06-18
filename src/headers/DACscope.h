@@ -61,6 +61,7 @@ extern int scaleInten;
 extern int blipInten;
 extern int SPIfreq;
 extern int SPIdly;
+extern bool fullTrace;
 
 class C_bulkSweepCalc{
 public:
