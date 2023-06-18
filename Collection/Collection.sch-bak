@@ -152,39 +152,6 @@ F 3 "~" H 10500 2650 50  0001 C CNN
 	1    10500 2650
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 6438E8BF
-P 9850 2750
-F 0 "R?" V 9600 2750 50  0000 C CNN
-F 1 "R" V 9700 2750 50  0000 C CNN
-F 2 "" V 9780 2750 50  0001 C CNN
-F 3 "~" H 9850 2750 50  0001 C CNN
-	1    9850 2750
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 6438F24F
-P 9450 2900
-F 0 "R?" H 9550 2950 50  0000 L CNN
-F 1 "R" H 9550 2900 50  0000 L CNN
-F 2 "" V 9380 2900 50  0001 C CNN
-F 3 "~" H 9450 2900 50  0001 C CNN
-	1    9450 2900
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 6438F8A2
-P 9850 3050
-F 0 "R?" V 9600 3050 50  0000 C CNN
-F 1 "R" V 9700 3050 50  0000 C CNN
-F 2 "" V 9780 3050 50  0001 C CNN
-F 3 "~" H 9850 3050 50  0001 C CNN
-	1    9850 3050
-	0    1    1    0   
-$EndComp
 Wire Wire Line
 	10000 2750 10100 2750
 Wire Wire Line
@@ -282,10 +249,8 @@ Wire Wire Line
 	10100 3050 10800 3050
 Wire Wire Line
 	9450 2750 9700 2750
-Connection ~ 9450 2750
 Wire Wire Line
 	9700 3050 9450 3050
-Connection ~ 9450 3050
 $Comp
 L Device:D D?
 U 1 1 6439A4A9
@@ -307,28 +272,6 @@ F 2 "" H 11300 3450 50  0001 C CNN
 F 3 "~" H 11300 3450 50  0001 C CNN
 	1    11300 3450
 	0    1    1    0   
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 643A14CD
-P 8350 2450
-F 0 "R?" H 8450 2500 50  0000 L CNN
-F 1 "R" H 8450 2450 50  0000 L CNN
-F 2 "" V 8280 2450 50  0001 C CNN
-F 3 "~" H 8350 2450 50  0001 C CNN
-	1    8350 2450
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 643A1C88
-P 8350 2750
-F 0 "R?" H 8450 2800 50  0000 L CNN
-F 1 "R" H 8450 2750 50  0000 L CNN
-F 2 "" V 8280 2750 50  0001 C CNN
-F 3 "~" H 8350 2750 50  0001 C CNN
-	1    8350 2750
-	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR?
@@ -365,7 +308,6 @@ F 3 "" H 8150 2600 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	8350 2600 8150 2600
-Connection ~ 8350 2600
 $Comp
 L Device:C C?
 U 1 1 643A355D
@@ -380,7 +322,6 @@ $EndComp
 Connection ~ 8150 2600
 Wire Wire Line
 	8150 2900 8350 2900
-Connection ~ 8350 2900
 $Comp
 L Device:R_POT RV?
 U 1 1 643A4487
@@ -417,28 +358,6 @@ $EndComp
 Wire Wire Line
 	11300 3300 11200 3300
 $Comp
-L Device:R R?
-U 1 1 643AC4D8
-P 11750 3500
-F 0 "R?" H 11850 3550 50  0000 L CNN
-F 1 "R" H 11850 3450 50  0000 L CNN
-F 2 "" V 11680 3500 50  0001 C CNN
-F 3 "~" H 11750 3500 50  0001 C CNN
-	1    11750 3500
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 643AC7DE
-P 11750 3800
-F 0 "R?" H 11850 3850 50  0000 L CNN
-F 1 "R" H 11850 3750 50  0000 L CNN
-F 2 "" V 11680 3800 50  0001 C CNN
-F 3 "~" H 11750 3800 50  0001 C CNN
-	1    11750 3800
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 643AC7E8
 P 11750 3950
@@ -462,7 +381,6 @@ F 3 "" H 11750 3350 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	11750 3650 11550 3650
-Connection ~ 11750 3650
 $Comp
 L Device:C C?
 U 1 1 643AC808
@@ -476,24 +394,11 @@ F 3 "~" H 11550 3500 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	11550 3350 11750 3350
-Connection ~ 11750 3350
 Wire Wire Line
 	11300 3600 11300 3650
 Wire Wire Line
 	11300 3650 11550 3650
 Connection ~ 11550 3650
-$Comp
-L Device:R R?
-U 1 1 643B23DC
-P 11000 3150
-F 0 "R?" H 11100 3200 50  0000 L CNN
-F 1 "R" H 11100 3150 50  0000 L CNN
-F 2 "" V 10930 3150 50  0001 C CNN
-F 3 "~" H 11000 3150 50  0001 C CNN
-	1    11000 3150
-	1    0    0    -1  
-$EndComp
-Connection ~ 11000 3300
 Wire Wire Line
 	10400 2950 11000 2950
 Wire Wire Line
@@ -522,28 +427,6 @@ F 3 "" H 9800 4050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
-U 1 1 643B61DD
-P 9500 3700
-F 0 "R?" H 9600 3750 50  0000 L CNN
-F 1 "R" H 9600 3700 50  0000 L CNN
-F 2 "" V 9430 3700 50  0001 C CNN
-F 3 "~" H 9500 3700 50  0001 C CNN
-	1    9500 3700
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 643B6551
-P 9500 4000
-F 0 "R?" H 9600 4050 50  0000 L CNN
-F 1 "R" H 9600 4000 50  0000 L CNN
-F 2 "" V 9430 4000 50  0001 C CNN
-F 3 "~" H 9500 4000 50  0001 C CNN
-	1    9500 4000
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 643B655B
 P 9500 4150
@@ -560,7 +443,6 @@ Wire Wire Line
 	9750 3850 9750 3650
 Wire Wire Line
 	9750 3650 10200 3650
-Connection ~ 9500 3850
 $Comp
 L Device:Q_NPN_BCE Q?
 U 1 1 643D0141
@@ -573,17 +455,6 @@ F 3 "~" H 12400 2750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
-U 1 1 643D06BA
-P 12050 2750
-F 0 "R?" V 11800 2750 50  0000 C CNN
-F 1 "R" V 11900 2750 50  0000 C CNN
-F 2 "" V 11980 2750 50  0001 C CNN
-F 3 "~" H 12050 2750 50  0001 C CNN
-	1    12050 2750
-	0    1    1    0   
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 643D1384
 P 12500 2950
@@ -592,17 +463,6 @@ F 1 "GND" H 12550 2750 50  0000 C CNN
 F 2 "" H 12500 2950 50  0001 C CNN
 F 3 "" H 12500 2950 50  0001 C CNN
 	1    12500 2950
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 643D1992
-P 12500 2400
-F 0 "R?" H 12600 2450 50  0000 L CNN
-F 1 "R" H 12600 2350 50  0000 L CNN
-F 2 "" V 12430 2400 50  0001 C CNN
-F 3 "~" H 12500 2400 50  0001 C CNN
-	1    12500 2400
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -745,18 +605,6 @@ F 3 "" H 11500 2450 50  0001 C CNN
 	1    11500 2450
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 643E6F29
-P 14200 2600
-F 0 "R?" V 14100 2800 50  0000 C CNN
-F 1 "R" V 14300 2750 50  0000 C CNN
-F 2 "" V 14130 2600 50  0001 C CNN
-F 3 "~" H 14200 2600 50  0001 C CNN
-	1    14200 2600
-	0    1    1    0   
-$EndComp
-Connection ~ 14050 2600
 Wire Wire Line
 	14050 3000 14650 3000
 Wire Wire Line
@@ -886,13 +734,7 @@ F 3 "~" H 13650 3800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	14050 3650 14050 3750
-Wire Wire Line
-	13800 3800 13800 3650
-Wire Wire Line
 	13800 3650 14050 3650
-Connection ~ 13800 3650
-Connection ~ 14050 3650
 $Comp
 L power:GND #PWR?
 U 1 1 64416D7E
@@ -1250,7 +1092,6 @@ F 3 "~" H 11950 4650 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	11800 4650 11650 4650
-Connection ~ 11350 4650
 Text Label 11650 4400 2    50   ~ 0
 CRT_GRID
 Wire Notes Line
@@ -1368,7 +1209,6 @@ Wire Wire Line
 	13200 2400 13200 2550
 Wire Wire Line
 	12500 2550 13200 2550
-Connection ~ 12500 2550
 Connection ~ 13200 2550
 Wire Wire Line
 	13200 2550 13200 2800
@@ -1525,7 +1365,6 @@ Wire Wire Line
 Wire Wire Line
 	4000 4200 4000 4450
 Connection ~ 4000 4200
-Connection ~ 3300 4200
 Wire Wire Line
 	3300 4200 4000 4200
 Wire Wire Line
@@ -1533,7 +1372,6 @@ Wire Wire Line
 Wire Wire Line
 	4050 5850 4050 6100
 Connection ~ 4050 5850
-Connection ~ 3350 5850
 Wire Wire Line
 	3350 5850 4050 5850
 Wire Wire Line
@@ -1660,18 +1498,6 @@ Wire Wire Line
 	5500 6300 5500 6100
 Wire Wire Line
 	4900 6300 5500 6300
-Connection ~ 4900 5900
-$Comp
-L Device:R R?
-U 1 1 64520D84
-P 5050 5900
-F 0 "R?" V 4950 6100 50  0000 C CNN
-F 1 "R" V 5150 6050 50  0000 C CNN
-F 2 "" V 4980 5900 50  0001 C CNN
-F 3 "~" H 5050 5900 50  0001 C CNN
-	1    5050 5900
-	0    1    1    0   
-$EndComp
 $Comp
 L Device:Q_NMOS_DGS Q?
 U 1 1 64520D7A
@@ -1779,17 +1605,6 @@ F 3 "" H 3350 5550 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
-U 1 1 64520D1B
-P 3350 5700
-F 0 "R?" H 3450 5750 50  0000 L CNN
-F 1 "R" H 3450 5650 50  0000 L CNN
-F 2 "" V 3280 5700 50  0001 C CNN
-F 3 "~" H 3350 5700 50  0001 C CNN
-	1    3350 5700
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 64520D11
 P 3350 6250
@@ -1799,17 +1614,6 @@ F 2 "" H 3350 6250 50  0001 C CNN
 F 3 "" H 3350 6250 50  0001 C CNN
 	1    3350 6250
 	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 64520D07
-P 2900 6050
-F 0 "R?" V 2650 6050 50  0000 C CNN
-F 1 "R" V 2750 6050 50  0000 C CNN
-F 2 "" V 2830 6050 50  0001 C CNN
-F 3 "~" H 2900 6050 50  0001 C CNN
-	1    2900 6050
-	0    1    1    0   
 $EndComp
 $Comp
 L Device:Q_NPN_BCE Q?
@@ -1849,18 +1653,6 @@ Wire Wire Line
 	5450 4650 5450 4450
 Wire Wire Line
 	4850 4650 5450 4650
-Connection ~ 4850 4250
-$Comp
-L Device:R R?
-U 1 1 644EE96C
-P 5000 4250
-F 0 "R?" V 4900 4450 50  0000 C CNN
-F 1 "R" V 5100 4400 50  0000 C CNN
-F 2 "" V 4930 4250 50  0001 C CNN
-F 3 "~" H 5000 4250 50  0001 C CNN
-	1    5000 4250
-	0    1    1    0   
-$EndComp
 $Comp
 L Device:Q_NMOS_DGS Q?
 U 1 1 644EE962
@@ -1952,17 +1744,6 @@ F 3 "" H 3300 3900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
-U 1 1 644EE903
-P 3300 4050
-F 0 "R?" H 3400 4100 50  0000 L CNN
-F 1 "R" H 3400 4000 50  0000 L CNN
-F 2 "" V 3230 4050 50  0001 C CNN
-F 3 "~" H 3300 4050 50  0001 C CNN
-	1    3300 4050
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 644EE8F9
 P 3300 4600
@@ -1972,17 +1753,6 @@ F 2 "" H 3300 4600 50  0001 C CNN
 F 3 "" H 3300 4600 50  0001 C CNN
 	1    3300 4600
 	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 644EE8EF
-P 2850 4400
-F 0 "R?" V 2600 4400 50  0000 C CNN
-F 1 "R" V 2700 4400 50  0000 C CNN
-F 2 "" V 2780 4400 50  0001 C CNN
-F 3 "~" H 2850 4400 50  0001 C CNN
-	1    2850 4400
-	0    1    1    0   
 $EndComp
 $Comp
 L Device:Q_NPN_BCE Q?
@@ -2095,7 +1865,6 @@ F 3 "" H 4950 1900 50  0001 C CNN
 	1    4950 1900
 	1    0    0    -1  
 $EndComp
-Connection ~ 2950 2700
 Wire Wire Line
 	3200 2500 3650 2500
 Wire Wire Line
@@ -2115,22 +1884,11 @@ F 3 "" H 2950 3000 50  0001 C CNN
 $EndComp
 $Comp
 L Device:R R?
-U 1 1 644BE2CC
-P 2950 2850
-F 0 "R?" H 3050 2900 50  0000 L CNN
-F 1 "R" H 3050 2850 50  0000 L CNN
-F 2 "" V 2880 2850 50  0001 C CNN
-F 3 "~" H 2950 2850 50  0001 C CNN
-	1    2950 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
 U 1 1 644BE2C2
 P 2950 2550
 F 0 "R?" H 3050 2600 50  0000 L CNN
-F 1 "R" H 3050 2550 50  0000 L CNN
-F 2 "" V 2880 2550 50  0001 C CNN
+F 1 "180K" H 3050 2550 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 2880 2550 50  0001 C CNN
 F 3 "~" H 2950 2550 50  0001 C CNN
 	1    2950 2550
 	1    0    0    -1  
@@ -2162,18 +1920,6 @@ Wire Wire Line
 	4450 1800 4450 1850
 Wire Wire Line
 	3850 1800 4450 1800
-Connection ~ 4450 2150
-$Comp
-L Device:R R?
-U 1 1 644BE2A4
-P 4450 2000
-F 0 "R?" H 4550 2050 50  0000 L CNN
-F 1 "R" H 4550 2000 50  0000 L CNN
-F 2 "" V 4380 2000 50  0001 C CNN
-F 3 "~" H 4450 2000 50  0001 C CNN
-	1    4450 2000
-	1    0    0    -1  
-$EndComp
 Connection ~ 5000 2500
 Wire Wire Line
 	4750 2500 5000 2500
@@ -2192,7 +1938,6 @@ F 3 "~" H 5000 2350 50  0001 C CNN
 	1    5000 2350
 	1    0    0    -1  
 $EndComp
-Connection ~ 5200 2500
 Wire Wire Line
 	5200 2500 5000 2500
 $Comp
@@ -2204,28 +1949,6 @@ F 1 "GND" H 5250 2600 50  0000 C CNN
 F 2 "" H 5200 2800 50  0001 C CNN
 F 3 "" H 5200 2800 50  0001 C CNN
 	1    5200 2800
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 644BE275
-P 5200 2650
-F 0 "R?" H 5300 2700 50  0000 L CNN
-F 1 "R" H 5300 2600 50  0000 L CNN
-F 2 "" V 5130 2650 50  0001 C CNN
-F 3 "~" H 5200 2650 50  0001 C CNN
-	1    5200 2650
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 644BE26B
-P 5200 2350
-F 0 "R?" H 5300 2400 50  0000 L CNN
-F 1 "R" H 5300 2300 50  0000 L CNN
-F 2 "" V 5130 2350 50  0001 C CNN
-F 3 "~" H 5200 2350 50  0001 C CNN
-	1    5200 2350
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -2250,7 +1973,6 @@ F 3 "~" H 3400 2900 50  0001 C CNN
 	1    3400 2900
 	0    -1   -1   0   
 $EndComp
-Connection ~ 1800 1750
 Wire Wire Line
 	1600 1750 1800 1750
 Connection ~ 1600 1450
@@ -2265,7 +1987,6 @@ F 3 "~" H 1600 1600 50  0001 C CNN
 	1    1600 1600
 	1    0    0    -1  
 $EndComp
-Connection ~ 1800 1450
 Wire Wire Line
 	1800 1450 1600 1450
 $Comp
@@ -2302,28 +2023,6 @@ F 3 "" H 1800 1750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
-U 1 1 644BE215
-P 1800 1600
-F 0 "R?" H 1900 1650 50  0000 L CNN
-F 1 "R" H 1900 1600 50  0000 L CNN
-F 2 "" V 1730 1600 50  0001 C CNN
-F 3 "~" H 1800 1600 50  0001 C CNN
-	1    1800 1600
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 644BE20B
-P 1800 1300
-F 0 "R?" H 1900 1350 50  0000 L CNN
-F 1 "R" H 1900 1300 50  0000 L CNN
-F 2 "" V 1730 1300 50  0001 C CNN
-F 3 "~" H 1800 1300 50  0001 C CNN
-	1    1800 1300
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:D D?
 U 1 1 644BE201
 P 4750 2300
@@ -2345,10 +2044,8 @@ F 3 "~" H 4450 2300 50  0001 C CNN
 	1    4450 2300
 	0    1    1    0   
 $EndComp
-Connection ~ 2900 1900
 Wire Wire Line
 	3150 1900 2900 1900
-Connection ~ 2900 1600
 Wire Wire Line
 	2900 1600 3150 1600
 Wire Wire Line
@@ -2423,39 +2120,6 @@ Wire Wire Line
 Wire Wire Line
 	3450 1600 3550 1600
 $Comp
-L Device:R R?
-U 1 1 644BE199
-P 3300 1900
-F 0 "R?" V 3050 1900 50  0000 C CNN
-F 1 "R" V 3150 1900 50  0000 C CNN
-F 2 "" V 3230 1900 50  0001 C CNN
-F 3 "~" H 3300 1900 50  0001 C CNN
-	1    3300 1900
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 644BE18F
-P 2900 1750
-F 0 "R?" H 3000 1800 50  0000 L CNN
-F 1 "R" H 3000 1750 50  0000 L CNN
-F 2 "" V 2830 1750 50  0001 C CNN
-F 3 "~" H 2900 1750 50  0001 C CNN
-	1    2900 1750
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 644BE185
-P 3300 1600
-F 0 "R?" V 3050 1600 50  0000 C CNN
-F 1 "R" V 3150 1600 50  0000 C CNN
-F 2 "" V 3230 1600 50  0001 C CNN
-F 3 "~" H 3300 1600 50  0001 C CNN
-	1    3300 1600
-	0    1    1    0   
-$EndComp
-$Comp
 L pspice:OPAMP U1B?
 U 1 1 644BE17B
 P 3950 1500
@@ -2486,17 +2150,6 @@ F 1 "AD8668" H 5200 1750 50  0000 L CNN
 F 2 "" H 5050 1600 50  0001 C CNN
 F 3 "~" H 5050 1600 50  0001 C CNN
 	1    5050 1600
-	1    0    0    -1  
-$EndComp
-$Comp
-L pspice:OPAMP U1A?
-U 1 1 644BD8E7
-P 2600 1600
-F 0 "U1A?" H 2650 1850 50  0000 L CNN
-F 1 "AD8668" H 2650 1750 50  0000 L CNN
-F 2 "" H 2600 1600 50  0001 C CNN
-F 3 "~" H 2600 1600 50  0001 C CNN
-	1    2600 1600
 	1    0    0    -1  
 $EndComp
 Wire Notes Line
@@ -2615,22 +2268,10 @@ F 3 "~" H 2100 8350 50  0001 C CNN
 	1    2100 8350
 	0    1    1    0   
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 6487B77A
-P 1650 8500
-F 0 "R?" H 1550 8450 50  0000 R CNN
-F 1 "R" H 1550 8500 50  0000 R CNN
-F 2 "" V 1580 8500 50  0001 C CNN
-F 3 "~" H 1650 8500 50  0001 C CNN
-	1    1650 8500
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
 	1950 8350 1650 8350
 Wire Wire Line
 	1650 8350 1650 7900
-Connection ~ 1650 8350
 Wire Wire Line
 	2250 7800 2250 8350
 Wire Wire Line
@@ -2727,7 +2368,6 @@ F 3 "" H 5200 2200 50  0001 C CNN
 	1    5200 2200
 	1    0    0    -1  
 $EndComp
-Connection ~ 5200 2200
 $Comp
 L power:+5VA #PWR?
 U 1 1 648CA0F5
@@ -2790,22 +2430,10 @@ F 3 "~" H 3550 8450 50  0001 C CNN
 	1    3550 8450
 	0    1    1    0   
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 648EE94A
-P 3100 8600
-F 0 "R?" H 3000 8550 50  0000 R CNN
-F 1 "R" H 3000 8600 50  0000 R CNN
-F 2 "" V 3030 8600 50  0001 C CNN
-F 3 "~" H 3100 8600 50  0001 C CNN
-	1    3100 8600
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
 	3400 8450 3100 8450
 Wire Wire Line
 	3100 8450 3100 8000
-Connection ~ 3100 8450
 Wire Wire Line
 	3700 7900 3700 8450
 Wire Wire Line
@@ -2829,17 +2457,6 @@ Wire Wire Line
 Connection ~ 3700 7900
 Wire Wire Line
 	2750 7800 3100 7800
-$Comp
-L Device:R R?
-U 1 1 648FF134
-P 2600 8000
-F 0 "R?" V 2400 8000 50  0000 C CNN
-F 1 "R" V 2600 8000 50  0000 C CNN
-F 2 "" V 2530 8000 50  0001 C CNN
-F 3 "~" H 2600 8000 50  0001 C CNN
-	1    2600 8000
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	2750 8000 2750 7800
 Wire Wire Line
@@ -2894,22 +2511,10 @@ F 3 "~" H 2100 10050 50  0001 C CNN
 	1    2100 10050
 	0    1    1    0   
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 649383D3
-P 1650 10200
-F 0 "R?" H 1550 10150 50  0000 R CNN
-F 1 "R" H 1550 10200 50  0000 R CNN
-F 2 "" V 1580 10200 50  0001 C CNN
-F 3 "~" H 1650 10200 50  0001 C CNN
-	1    1650 10200
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
 	1950 10050 1650 10050
 Wire Wire Line
 	1650 10050 1650 9600
-Connection ~ 1650 10050
 Wire Wire Line
 	2250 9500 2250 10050
 Wire Wire Line
@@ -2990,22 +2595,10 @@ F 3 "~" H 3550 10150 50  0001 C CNN
 	1    3550 10150
 	0    1    1    0   
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 64938424
-P 3100 10300
-F 0 "R?" H 3000 10250 50  0000 R CNN
-F 1 "R" H 3000 10300 50  0000 R CNN
-F 2 "" V 3030 10300 50  0001 C CNN
-F 3 "~" H 3100 10300 50  0001 C CNN
-	1    3100 10300
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
 	3400 10150 3100 10150
 Wire Wire Line
 	3100 10150 3100 9700
-Connection ~ 3100 10150
 Wire Wire Line
 	3700 9600 3700 10150
 Wire Wire Line
@@ -3029,17 +2622,6 @@ Wire Wire Line
 Connection ~ 3700 9600
 Wire Wire Line
 	2750 9500 3100 9500
-$Comp
-L Device:R R?
-U 1 1 64938442
-P 2600 9700
-F 0 "R?" V 2400 9700 50  0000 C CNN
-F 1 "R" V 2600 9700 50  0000 C CNN
-F 2 "" V 2530 9700 50  0001 C CNN
-F 3 "~" H 2600 9700 50  0001 C CNN
-	1    2600 9700
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	2750 9700 2750 9500
 Wire Wire Line
@@ -3145,22 +2727,10 @@ F 3 "~" H 6150 8400 50  0001 C CNN
 	1    6150 8400
 	0    1    1    0   
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 64AB1740
-P 5700 8550
-F 0 "R?" H 5600 8500 50  0000 R CNN
-F 1 "R" H 5600 8550 50  0000 R CNN
-F 2 "" V 5630 8550 50  0001 C CNN
-F 3 "~" H 5700 8550 50  0001 C CNN
-	1    5700 8550
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
 	6000 8400 5700 8400
 Wire Wire Line
 	5700 8400 5700 7950
-Connection ~ 5700 8400
 Wire Wire Line
 	6300 7850 6300 8400
 Wire Wire Line
@@ -3201,22 +2771,10 @@ F 3 "~" H 6150 10100 50  0001 C CNN
 	1    6150 10100
 	0    1    1    0   
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 64ADDFFE
-P 5700 10250
-F 0 "R?" H 5600 10200 50  0000 R CNN
-F 1 "R" H 5600 10250 50  0000 R CNN
-F 2 "" V 5630 10250 50  0001 C CNN
-F 3 "~" H 5700 10250 50  0001 C CNN
-	1    5700 10250
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
 	6000 10100 5700 10100
 Wire Wire Line
 	5700 10100 5700 9650
-Connection ~ 5700 10100
 Wire Wire Line
 	6300 9550 6300 10100
 Wire Wire Line
@@ -3269,17 +2827,6 @@ F 3 "" H 7150 7650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
-U 1 1 64B33DDB
-P 6800 7850
-F 0 "R?" V 7050 7850 50  0000 C CNN
-F 1 "R" V 6950 7850 50  0000 C CNN
-F 2 "" V 6730 7850 50  0001 C CNN
-F 3 "~" H 6800 7850 50  0001 C CNN
-	1    6800 7850
-	0    -1   -1   0   
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 64B33DEC
 P 6950 8050
@@ -3301,22 +2848,10 @@ F 3 "" H 7150 8250 50  0001 C CNN
 	1    7150 8250
 	-1   0    0    1   
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 64C48A7E
-P 7150 7350
-F 0 "R?" V 7400 7350 50  0000 C CNN
-F 1 "R" V 7300 7350 50  0000 C CNN
-F 2 "" V 7080 7350 50  0001 C CNN
-F 3 "~" H 7150 7350 50  0001 C CNN
-	1    7150 7350
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	7000 7350 6950 7350
 Wire Wire Line
 	6950 7350 6950 7850
-Connection ~ 6950 7850
 Wire Wire Line
 	7300 7350 7550 7350
 Wire Wire Line
@@ -3344,17 +2879,6 @@ F 3 "" H 7150 9350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
-U 1 1 64C753ED
-P 6800 9550
-F 0 "R?" V 7050 9550 50  0000 C CNN
-F 1 "R" V 6950 9550 50  0000 C CNN
-F 2 "" V 6730 9550 50  0001 C CNN
-F 3 "~" H 6800 9550 50  0001 C CNN
-	1    6800 9550
-	0    -1   -1   0   
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 64C753F7
 P 6950 9750
@@ -3376,22 +2900,10 @@ F 3 "" H 7150 9950 50  0001 C CNN
 	1    7150 9950
 	-1   0    0    1   
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 64C7540B
-P 7150 9050
-F 0 "R?" V 7400 9050 50  0000 C CNN
-F 1 "R" V 7300 9050 50  0000 C CNN
-F 2 "" V 7080 9050 50  0001 C CNN
-F 3 "~" H 7150 9050 50  0001 C CNN
-	1    7150 9050
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	7000 9050 6950 9050
 Wire Wire Line
 	6950 9050 6950 9550
-Connection ~ 6950 9550
 Wire Wire Line
 	7300 9050 7550 9050
 Wire Wire Line
@@ -3524,21 +3036,8 @@ F 3 "~" H 8150 9350 50  0001 C CNN
 	1    8150 9350
 	0    -1   -1   0   
 $EndComp
-$Comp
-L Device:R R?
-U 1 1 64E50657
-P 8350 9500
-F 0 "R?" H 8450 9550 50  0000 L CNN
-F 1 "R" H 8450 9500 50  0000 L CNN
-F 2 "" V 8280 9500 50  0001 C CNN
-F 3 "~" H 8350 9500 50  0001 C CNN
-	1    8350 9500
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	7950 8950 7950 9200
-Wire Wire Line
-	8300 9350 8350 9350
 Wire Wire Line
 	8000 9350 7950 9350
 Connection ~ 7950 9350
@@ -3573,17 +3072,6 @@ F 3 "http://www.everlight.com/file/ProductFile/EL817.pdf" H 9050 10300 50  0001 
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
-U 1 1 64FD752B
-P 8750 10550
-F 0 "R?" H 8850 10600 50  0000 L CNN
-F 1 "R" H 8850 10550 50  0000 L CNN
-F 2 "" V 8680 10550 50  0001 C CNN
-F 3 "~" H 8750 10550 50  0001 C CNN
-	1    8750 10550
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:-5V #PWR?
 U 1 1 64FD791F
 P 8750 10700
@@ -3596,22 +3084,8 @@ F 3 "" H 8750 10700 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	9350 9950 9350 10200
-$Comp
-L Device:R R?
-U 1 1 64FF0D31
-P 8750 9600
-F 0 "R?" H 8850 9650 50  0000 L CNN
-F 1 "R" H 8850 9600 50  0000 L CNN
-F 2 "" V 8680 9600 50  0001 C CNN
-F 3 "~" H 8750 9600 50  0001 C CNN
-	1    8750 9600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8350 9350 8750 9350
 Wire Wire Line
 	8750 9350 8750 9450
-Connection ~ 8350 9350
 Wire Wire Line
 	8750 9950 8350 9950
 Connection ~ 8350 9950
@@ -3639,17 +3113,6 @@ F 2 "" H 9650 9350 50  0001 C CNN
 F 3 "~" H 9450 9250 50  0001 C CNN
 	1    9450 9250
 	-1   0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 650419DE
-P 10250 9100
-F 0 "R?" V 10500 9100 50  0000 C CNN
-F 1 "R" V 10400 9100 50  0000 C CNN
-F 2 "" V 10180 9100 50  0001 C CNN
-F 3 "~" H 10250 9100 50  0001 C CNN
-	1    10250 9100
-	0    -1   -1   0   
 $EndComp
 Wire Wire Line
 	9350 9750 9350 9450
@@ -3681,17 +3144,6 @@ F 3 "" H 9800 9700 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	9800 9100 10100 9100
-$Comp
-L Device:R R?
-U 1 1 65097A11
-P 9800 9550
-F 0 "R?" H 9900 9600 50  0000 L CNN
-F 1 "R" H 9900 9550 50  0000 L CNN
-F 2 "" V 9730 9550 50  0001 C CNN
-F 3 "~" H 9800 9550 50  0001 C CNN
-	1    9800 9550
-	1    0    0    -1  
-$EndComp
 Text Label 10450 9100 1    50   ~ 0
 Intensity_From_DAC
 Wire Wire Line
@@ -3741,17 +3193,6 @@ Wire Wire Line
 Wire Wire Line
 	5500 9450 5700 9450
 $Comp
-L Device:R R?
-U 1 1 6440C003
-P 5500 8100
-F 0 "R?" H 5400 8050 50  0000 R CNN
-F 1 "R" H 5400 8100 50  0000 R CNN
-F 2 "" V 5430 8100 50  0001 C CNN
-F 3 "~" H 5500 8100 50  0001 C CNN
-	1    5500 8100
-	-1   0    0    1   
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 6440D5EB
 P 5500 8250
@@ -3761,17 +3202,6 @@ F 2 "" H 5500 8250 50  0001 C CNN
 F 3 "" H 5500 8250 50  0001 C CNN
 	1    5500 8250
 	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 64426FB5
-P 5500 9800
-F 0 "R?" H 5400 9750 50  0000 R CNN
-F 1 "R" H 5400 9800 50  0000 R CNN
-F 2 "" V 5430 9800 50  0001 C CNN
-F 3 "~" H 5500 9800 50  0001 C CNN
-	1    5500 9800
-	-1   0    0    1   
 $EndComp
 $Comp
 L power:GND #PWR?
@@ -3792,22 +3222,10 @@ Wire Wire Line
 Connection ~ 5500 7750
 Text Label 12100 4500 0    50   ~ 0
 IntensityCTRL
-$Comp
-L Device:R R?
-U 1 1 6442BE8E
-P 11500 4650
-F 0 "R?" V 11400 4650 50  0000 L CNN
-F 1 "R" V 11500 4600 50  0000 L CNN
-F 2 "" V 11430 4650 50  0001 C CNN
-F 3 "~" H 11500 4650 50  0001 C CNN
-	1    11500 4650
-	0    1    1    0   
-$EndComp
 Wire Wire Line
 	11650 4500 11650 4650
 Wire Wire Line
 	11650 4500 11950 4500
-Connection ~ 11650 4650
 Wire Wire Line
 	11650 4400 11650 4500
 Connection ~ 11650 4500
@@ -3835,7 +3253,7 @@ L Device:D_Zener D?
 U 1 1 644B4D2D
 P 10700 5250
 F 0 "D?" H 10700 5500 50  0000 C CNN
-F 1 "D_Zener" H 10700 5400 50  0000 C CNN
+F 1 "ZD_17V" H 10700 5400 50  0000 C CNN
 F 2 "" H 10700 5250 50  0001 C CNN
 F 3 "~" H 10700 5250 50  0001 C CNN
 	1    10700 5250
@@ -3873,4 +3291,592 @@ Wire Wire Line
 	10400 5100 10400 4350
 Wire Wire Line
 	10400 4350 11150 4350
+$Comp
+L Device:R R?
+U 1 1 64900A72
+P 2950 2850
+F 0 "R?" H 3050 2900 50  0000 L CNN
+F 1 "10K" H 3050 2850 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 2880 2850 50  0001 C CNN
+F 3 "~" H 2950 2850 50  0001 C CNN
+	1    2950 2850
+	1    0    0    -1  
+$EndComp
+Connection ~ 2950 2700
+$Comp
+L Device:R R?
+U 1 1 64901621
+P 1800 1300
+F 0 "R?" H 1900 1350 50  0000 L CNN
+F 1 "10K" H 1900 1300 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 1730 1300 50  0001 C CNN
+F 3 "~" H 1800 1300 50  0001 C CNN
+	1    1800 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 64901982
+P 1800 1600
+F 0 "R?" H 1900 1650 50  0000 L CNN
+F 1 "10K" H 1900 1600 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 1730 1600 50  0001 C CNN
+F 3 "~" H 1800 1600 50  0001 C CNN
+	1    1800 1600
+	1    0    0    -1  
+$EndComp
+Connection ~ 1800 1450
+Connection ~ 1800 1750
+$Comp
+L Device:R R?
+U 1 1 649025B8
+P 5200 2350
+F 0 "R?" H 5300 2400 50  0000 L CNN
+F 1 "10K" H 5300 2350 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 5130 2350 50  0001 C CNN
+F 3 "~" H 5200 2350 50  0001 C CNN
+	1    5200 2350
+	1    0    0    -1  
+$EndComp
+Connection ~ 5200 2200
+$Comp
+L Device:R R?
+U 1 1 64902A9A
+P 5200 2650
+F 0 "R?" H 5300 2700 50  0000 L CNN
+F 1 "10K" H 5300 2650 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 5130 2650 50  0001 C CNN
+F 3 "~" H 5200 2650 50  0001 C CNN
+	1    5200 2650
+	1    0    0    -1  
+$EndComp
+Connection ~ 5200 2500
+$Comp
+L Device:R R?
+U 1 1 6490368E
+P 8350 2750
+F 0 "R?" H 8450 2800 50  0000 L CNN
+F 1 "10K" H 8450 2750 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 8280 2750 50  0001 C CNN
+F 3 "~" H 8350 2750 50  0001 C CNN
+	1    8350 2750
+	1    0    0    -1  
+$EndComp
+Connection ~ 8350 2900
+$Comp
+L Device:R R?
+U 1 1 64903A75
+P 8350 2450
+F 0 "R?" H 8450 2500 50  0000 L CNN
+F 1 "10K" H 8450 2450 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 8280 2450 50  0001 C CNN
+F 3 "~" H 8350 2450 50  0001 C CNN
+	1    8350 2450
+	1    0    0    -1  
+$EndComp
+Connection ~ 8350 2600
+$Comp
+L Device:R R?
+U 1 1 6490454E
+P 11750 3500
+F 0 "R?" H 11850 3550 50  0000 L CNN
+F 1 "10K" H 11850 3500 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 11680 3500 50  0001 C CNN
+F 3 "~" H 11750 3500 50  0001 C CNN
+	1    11750 3500
+	1    0    0    -1  
+$EndComp
+Connection ~ 11750 3350
+$Comp
+L Device:R R?
+U 1 1 649048C2
+P 11750 3800
+F 0 "R?" H 11850 3850 50  0000 L CNN
+F 1 "10K" H 11850 3800 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 11680 3800 50  0001 C CNN
+F 3 "~" H 11750 3800 50  0001 C CNN
+	1    11750 3800
+	1    0    0    -1  
+$EndComp
+Connection ~ 11750 3650
+$Comp
+L Device:R R?
+U 1 1 649053A4
+P 9850 2750
+F 0 "R?" H 9950 2800 50  0000 L CNN
+F 1 "10K" H 9950 2750 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 9780 2750 50  0001 C CNN
+F 3 "~" H 9850 2750 50  0001 C CNN
+	1    9850 2750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 64905A31
+P 9850 3050
+F 0 "R?" H 9950 3100 50  0000 L CNN
+F 1 "10K" H 9950 3050 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 9780 3050 50  0001 C CNN
+F 3 "~" H 9850 3050 50  0001 C CNN
+	1    9850 3050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 64905CDA
+P 9450 2900
+F 0 "R?" H 9550 2950 50  0000 L CNN
+F 1 "10K" H 9550 2900 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 9380 2900 50  0001 C CNN
+F 3 "~" H 9450 2900 50  0001 C CNN
+	1    9450 2900
+	1    0    0    -1  
+$EndComp
+Connection ~ 9450 2750
+Connection ~ 9450 3050
+$Comp
+L Device:R R?
+U 1 1 64905F92
+P 11000 3150
+F 0 "R?" H 11100 3200 50  0000 L CNN
+F 1 "10K" H 11100 3150 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 10930 3150 50  0001 C CNN
+F 3 "~" H 11000 3150 50  0001 C CNN
+	1    11000 3150
+	1    0    0    -1  
+$EndComp
+Connection ~ 11000 3300
+$Comp
+L Device:R R?
+U 1 1 64906386
+P 9500 3700
+F 0 "R?" H 9600 3750 50  0000 L CNN
+F 1 "100K" H 9600 3700 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 9430 3700 50  0001 C CNN
+F 3 "~" H 9500 3700 50  0001 C CNN
+	1    9500 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 64906819
+P 9500 4000
+F 0 "R?" H 9600 4050 50  0000 L CNN
+F 1 "10K" H 9600 4000 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 9430 4000 50  0001 C CNN
+F 3 "~" H 9500 4000 50  0001 C CNN
+	1    9500 4000
+	1    0    0    -1  
+$EndComp
+Connection ~ 9500 3850
+$Comp
+L Device:R R?
+U 1 1 649074E6
+P 12500 2400
+F 0 "R?" H 12600 2450 50  0000 L CNN
+F 1 "10K" H 12600 2400 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 12430 2400 50  0001 C CNN
+F 3 "~" H 12500 2400 50  0001 C CNN
+	1    12500 2400
+	1    0    0    -1  
+$EndComp
+Connection ~ 12500 2550
+$Comp
+L Device:R R?
+U 1 1 64907A5C
+P 12050 2750
+F 0 "R?" H 12150 2800 50  0000 L CNN
+F 1 "10K" H 12150 2750 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 11980 2750 50  0001 C CNN
+F 3 "~" H 12050 2750 50  0001 C CNN
+	1    12050 2750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 64907EDD
+P 14200 2600
+F 0 "R?" H 14300 2650 50  0000 L CNN
+F 1 "10K" H 14300 2600 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 14130 2600 50  0001 C CNN
+F 3 "~" H 14200 2600 50  0001 C CNN
+	1    14200 2600
+	0    -1   -1   0   
+$EndComp
+Connection ~ 14050 2600
+$Comp
+L Device:R R?
+U 1 1 64908A7B
+P 11500 4650
+F 0 "R?" H 11600 4700 50  0000 L CNN
+F 1 "10K" H 11600 4650 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 11430 4650 50  0001 C CNN
+F 3 "~" H 11500 4650 50  0001 C CNN
+	1    11500 4650
+	0    -1   -1   0   
+$EndComp
+Connection ~ 11350 4650
+Connection ~ 11650 4650
+$Comp
+L pspice:OPAMP U1A?
+U 1 1 644BD8E7
+P 2600 1600
+F 0 "U1A?" H 2650 1850 50  0000 L CNN
+F 1 "AD8668" H 2650 1750 50  0000 L CNN
+F 2 "" H 2600 1600 50  0001 C CNN
+F 3 "~" H 2600 1600 50  0001 C CNN
+	1    2600 1600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6490CCC1
+P 2900 1750
+F 0 "R?" H 3000 1800 50  0000 L CNN
+F 1 "10K" H 3000 1750 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 2830 1750 50  0001 C CNN
+F 3 "~" H 2900 1750 50  0001 C CNN
+	1    2900 1750
+	1    0    0    -1  
+$EndComp
+Connection ~ 2900 1600
+Connection ~ 2900 1900
+$Comp
+L Device:R R?
+U 1 1 6490D0E7
+P 3300 1600
+F 0 "R?" H 3400 1650 50  0000 L CNN
+F 1 "10K" H 3400 1600 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 3230 1600 50  0001 C CNN
+F 3 "~" H 3300 1600 50  0001 C CNN
+	1    3300 1600
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6490D749
+P 3300 1900
+F 0 "R?" H 3400 1950 50  0000 L CNN
+F 1 "10K" H 3400 1900 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 3230 1900 50  0001 C CNN
+F 3 "~" H 3300 1900 50  0001 C CNN
+	1    3300 1900
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6490DA6B
+P 4450 2000
+F 0 "R?" H 4550 2050 50  0000 L CNN
+F 1 "10K" H 4550 2000 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 4380 2000 50  0001 C CNN
+F 3 "~" H 4450 2000 50  0001 C CNN
+	1    4450 2000
+	1    0    0    -1  
+$EndComp
+Connection ~ 4450 2150
+$Comp
+L Device:R R?
+U 1 1 6490E6B4
+P 3300 4050
+F 0 "R?" H 3400 4100 50  0000 L CNN
+F 1 "10K" H 3400 4050 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 3230 4050 50  0001 C CNN
+F 3 "~" H 3300 4050 50  0001 C CNN
+	1    3300 4050
+	1    0    0    -1  
+$EndComp
+Connection ~ 3300 4200
+$Comp
+L Device:R R?
+U 1 1 6490E9FE
+P 2850 4400
+F 0 "R?" H 2950 4450 50  0000 L CNN
+F 1 "10K" H 2950 4400 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 2780 4400 50  0001 C CNN
+F 3 "~" H 2850 4400 50  0001 C CNN
+	1    2850 4400
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6490EF92
+P 5000 4250
+F 0 "R?" H 5100 4300 50  0000 L CNN
+F 1 "10K" H 5100 4250 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 4930 4250 50  0001 C CNN
+F 3 "~" H 5000 4250 50  0001 C CNN
+	1    5000 4250
+	0    -1   -1   0   
+$EndComp
+Connection ~ 4850 4250
+$Comp
+L Device:R R?
+U 1 1 6490FD4D
+P 2900 6050
+F 0 "R?" H 3000 6100 50  0000 L CNN
+F 1 "10K" H 3000 6050 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 2830 6050 50  0001 C CNN
+F 3 "~" H 2900 6050 50  0001 C CNN
+	1    2900 6050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 649101B4
+P 3350 5700
+F 0 "R?" H 3450 5750 50  0000 L CNN
+F 1 "10K" H 3450 5700 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 3280 5700 50  0001 C CNN
+F 3 "~" H 3350 5700 50  0001 C CNN
+	1    3350 5700
+	1    0    0    -1  
+$EndComp
+Connection ~ 3350 5850
+$Comp
+L Device:R R?
+U 1 1 6491052B
+P 5050 5900
+F 0 "R?" H 5150 5950 50  0000 L CNN
+F 1 "10K" H 5150 5900 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 4980 5900 50  0001 C CNN
+F 3 "~" H 5050 5900 50  0001 C CNN
+	1    5050 5900
+	0    -1   -1   0   
+$EndComp
+Connection ~ 4900 5900
+Text Label 2750 7550 0    50   ~ 0
+X_Bypass
+Text Label 2750 9250 0    50   ~ 0
+Y_Bypass
+Wire Wire Line
+	2750 7550 2750 7800
+Wire Wire Line
+	2750 9250 2750 9500
+$Comp
+L Device:R R?
+U 1 1 6494ACB9
+P 1650 8500
+F 0 "R?" H 1750 8550 50  0000 L CNN
+F 1 "10K" H 1750 8500 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 1580 8500 50  0001 C CNN
+F 3 "~" H 1650 8500 50  0001 C CNN
+	1    1650 8500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6494B25E
+P 2600 8000
+F 0 "R?" H 2700 8050 50  0000 L CNN
+F 1 "10K" H 2700 8000 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 2530 8000 50  0001 C CNN
+F 3 "~" H 2600 8000 50  0001 C CNN
+	1    2600 8000
+	0    -1   -1   0   
+$EndComp
+Connection ~ 1650 8350
+$Comp
+L Device:R R?
+U 1 1 6494BB21
+P 3100 8600
+F 0 "R?" H 3200 8650 50  0000 L CNN
+F 1 "10K" H 3200 8600 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 3030 8600 50  0001 C CNN
+F 3 "~" H 3100 8600 50  0001 C CNN
+	1    3100 8600
+	1    0    0    -1  
+$EndComp
+Connection ~ 3100 8450
+$Comp
+L Device:R R?
+U 1 1 6494BE4C
+P 2600 9700
+F 0 "R?" H 2700 9750 50  0000 L CNN
+F 1 "10K" H 2700 9700 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 2530 9700 50  0001 C CNN
+F 3 "~" H 2600 9700 50  0001 C CNN
+	1    2600 9700
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6494C3B6
+P 1650 10200
+F 0 "R?" H 1750 10250 50  0000 L CNN
+F 1 "10K" H 1750 10200 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 1580 10200 50  0001 C CNN
+F 3 "~" H 1650 10200 50  0001 C CNN
+	1    1650 10200
+	1    0    0    -1  
+$EndComp
+Connection ~ 1650 10050
+$Comp
+L Device:R R?
+U 1 1 6494C8B1
+P 3100 10300
+F 0 "R?" H 3200 10350 50  0000 L CNN
+F 1 "10K" H 3200 10300 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 3030 10300 50  0001 C CNN
+F 3 "~" H 3100 10300 50  0001 C CNN
+	1    3100 10300
+	1    0    0    -1  
+$EndComp
+Connection ~ 3100 10150
+$Comp
+L Device:R R?
+U 1 1 6494D66F
+P 5500 9800
+F 0 "R?" H 5600 9850 50  0000 L CNN
+F 1 "10K" H 5600 9800 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 5430 9800 50  0001 C CNN
+F 3 "~" H 5500 9800 50  0001 C CNN
+	1    5500 9800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6494DC73
+P 5700 10250
+F 0 "R?" H 5800 10300 50  0000 L CNN
+F 1 "10K" H 5800 10250 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 5630 10250 50  0001 C CNN
+F 3 "~" H 5700 10250 50  0001 C CNN
+	1    5700 10250
+	1    0    0    -1  
+$EndComp
+Connection ~ 5700 10100
+$Comp
+L Device:R R?
+U 1 1 6494DF82
+P 6800 9550
+F 0 "R?" H 6900 9600 50  0000 L CNN
+F 1 "10K" H 6900 9550 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 6730 9550 50  0001 C CNN
+F 3 "~" H 6800 9550 50  0001 C CNN
+	1    6800 9550
+	0    1    1    0   
+$EndComp
+Connection ~ 6950 9550
+$Comp
+L Device:R R?
+U 1 1 6494E56C
+P 7150 9050
+F 0 "R?" H 7250 9100 50  0000 L CNN
+F 1 "10K" H 7250 9050 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 7080 9050 50  0001 C CNN
+F 3 "~" H 7150 9050 50  0001 C CNN
+	1    7150 9050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6494F447
+P 5500 8100
+F 0 "R?" H 5600 8150 50  0000 L CNN
+F 1 "10K" H 5600 8100 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 5430 8100 50  0001 C CNN
+F 3 "~" H 5500 8100 50  0001 C CNN
+	1    5500 8100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6494F918
+P 5700 8550
+F 0 "R?" H 5800 8600 50  0000 L CNN
+F 1 "10K" H 5800 8550 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 5630 8550 50  0001 C CNN
+F 3 "~" H 5700 8550 50  0001 C CNN
+	1    5700 8550
+	1    0    0    -1  
+$EndComp
+Connection ~ 5700 8400
+$Comp
+L Device:R R?
+U 1 1 6494FD0D
+P 6800 7850
+F 0 "R?" H 6900 7900 50  0000 L CNN
+F 1 "10K" H 6900 7850 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 6730 7850 50  0001 C CNN
+F 3 "~" H 6800 7850 50  0001 C CNN
+	1    6800 7850
+	0    1    1    0   
+$EndComp
+Connection ~ 6950 7850
+$Comp
+L Device:R R?
+U 1 1 649500EF
+P 7150 7350
+F 0 "R?" H 7250 7400 50  0000 L CNN
+F 1 "10K" H 7250 7350 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 7080 7350 50  0001 C CNN
+F 3 "~" H 7150 7350 50  0001 C CNN
+	1    7150 7350
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	8300 9350 8350 9350
+$Comp
+L Device:R R?
+U 1 1 64950FE0
+P 8350 9500
+F 0 "R?" H 8450 9550 50  0000 L CNN
+F 1 "10K" H 8450 9500 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 8280 9500 50  0001 C CNN
+F 3 "~" H 8350 9500 50  0001 C CNN
+	1    8350 9500
+	1    0    0    -1  
+$EndComp
+Connection ~ 8350 9350
+Wire Wire Line
+	8350 9350 8750 9350
+$Comp
+L Device:R R?
+U 1 1 64951844
+P 8750 9600
+F 0 "R?" H 8850 9650 50  0000 L CNN
+F 1 "10K" H 8850 9600 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 8680 9600 50  0001 C CNN
+F 3 "~" H 8750 9600 50  0001 C CNN
+	1    8750 9600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 64951B0C
+P 8750 10550
+F 0 "R?" H 8850 10600 50  0000 L CNN
+F 1 "10K" H 8850 10550 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 8680 10550 50  0001 C CNN
+F 3 "~" H 8750 10550 50  0001 C CNN
+	1    8750 10550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 649540C5
+P 9800 9550
+F 0 "R?" H 9900 9600 50  0000 L CNN
+F 1 "10K" H 9900 9550 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 9730 9550 50  0001 C CNN
+F 3 "~" H 9800 9550 50  0001 C CNN
+	1    9800 9550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 64954539
+P 10250 9100
+F 0 "R?" H 10350 9150 50  0000 L CNN
+F 1 "10K" H 10350 9100 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603" V 10180 9100 50  0001 C CNN
+F 3 "~" H 10250 9100 50  0001 C CNN
+	1    10250 9100
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	14050 3750 13800 3750
+Wire Wire Line
+	13800 3750 13800 3800
 $EndSCHEMATC
